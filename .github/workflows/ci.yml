@@ -45,7 +45,7 @@ jobs:
           pip install -r requirements.txt
           pip install flake8
       - name: Run Flake8
-        run: flake8
+        run: flake8 --max-line-length 88
 
   tests:
     runs-on: windows-latest
