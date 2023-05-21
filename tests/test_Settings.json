@@ -1,0 +1,27 @@
+{
+    "receive": {
+        "port": 9001
+    },
+    "transmit": [
+        {
+            "name": "test1_t",
+            "port": 9001,
+            "enabled": true
+        },
+        {
+            "name": "test2_t",
+            "port": 9002,
+            "enabled": true
+        },
+        {
+            "name": "test3_f",
+            "port": 9003,
+            "enabled": false
+        },
+        {
+            "name": "test3_f",
+            "port": 9003,
+            "enabled": false
+        }
+    ]
+}
