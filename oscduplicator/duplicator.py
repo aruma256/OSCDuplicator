@@ -79,7 +79,7 @@ class OSCDuplicator:
         """
         self.__server.shutdown()
 
-    def __queue_osc(self, q: queue.Queue, address: str, *args: list) -> None:
+    def __queue_osc(self, address: str, *args: list) -> None:
         """
         受信したOSC信号をdictとして、キューに追加する
 
@@ -91,10 +91,10 @@ class OSCDuplicator:
             osc信号
         """
         d = {"address": address, "args": args}
-        q.put(d)
+        self.__q.put(d)
 
     def transmit_msg(
-        self, clients: list[udp_client.SimpleUDPClient], q: queue.Queue
+        self, clients: list[udp_client.SimpleUDPClient]
     ) -> None:
         """
         osc信号を転送する
@@ -112,7 +112,7 @@ class OSCDuplicator:
             return
 
         while True:
-            d = q.get()
+            d = self.__q.get()
             address: str = d["address"]
             args: list = d["args"]
 
@@ -127,7 +127,7 @@ class OSCDuplicator:
             for thread in threads:
                 thread.join()
 
-            q.task_done()
+            self.__q.task_done()
 
     def load_settings(self, file_path: str) -> None:
         """
