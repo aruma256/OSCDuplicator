@@ -94,9 +94,7 @@ class OSCDuplicator:
         d = {"address": address, "args": args}
         self.__q.put(d)
 
-    def transmit_msg(
-        self, clients: list[udp_client.SimpleUDPClient]
-    ) -> None:
+    def transmit_msg(self, clients: list[udp_client.SimpleUDPClient]) -> None:
         """
         osc信号を転送する
 
@@ -118,7 +116,13 @@ class OSCDuplicator:
             args: list = d["args"]
 
             threads = [
-                Thread(target=client.send_message, args=(address, args[0], ))
+                Thread(
+                    target=client.send_message,
+                    args=(
+                        address,
+                        args[0],
+                    ),
+                )
                 for client in clients
             ]
 
@@ -192,7 +196,7 @@ class OSCDuplicator:
             ip = socket.gethostbyname(hostname)
             str_ip = str(ip)
             return udp_client.SimpleUDPClient(str_ip, port)
-        
+
         port_l: list[int] = []
         for tps in transmit_port_settings:
             if tps.enabled:
@@ -237,7 +241,7 @@ class OSCDuplicator:
 
         save_data: dict = {
             "receive": {"port": self.receive_port},
-            "transmit": transmit_settings
+            "transmit": transmit_settings,
         }
 
         with open(file_path, "w", encoding="UTF-8") as f:
