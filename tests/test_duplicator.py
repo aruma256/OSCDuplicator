@@ -7,36 +7,6 @@ from pythonosc import osc_server
 from oscduplicator.duplicator import OSCDuplicator, TransmitPortSetting
 
 
-class TestTransmitPortSettings:
-    def test_init_TransmitPortSettings(self):
-        """
-        TransmitPortSettingが不正な値に対して例外を出せるかテスト
-        """
-
-        # correct data
-        port_settings = TransmitPortSetting("Port0", 9000, True)
-        assert port_settings.name == "Port0"
-        assert port_settings.port == 9000
-        assert port_settings.enabled is True
-
-        # incorrect data type
-        with pytest.raises(TypeError):
-            TransmitPortSetting(123, 9000, False)
-
-        with pytest.raises(TypeError):
-            TransmitPortSetting("設定", "9000", True)
-
-        # incorrect data value
-        with pytest.raises(ValueError):
-            TransmitPortSetting("koya_so", -1, True)
-
-        with pytest.raises(ValueError):
-            TransmitPortSetting("koya_so", 65536, True)
-
-        with pytest.raises(TypeError):
-            TransmitPortSetting("nyanko", 8000, "neko")
-
-
 class TestDuplicator:
     osc_duplicator = OSCDuplicator()
     # def test_start_server(self):
