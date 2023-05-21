@@ -2,7 +2,6 @@ import json
 import queue
 from dataclasses import dataclass
 from threading import Thread
-from typing import Optional
 
 from pythonosc import dispatcher, osc_server, udp_client
 
@@ -73,9 +72,9 @@ class OSCDuplicator:
     """
 
     def __init__(self) -> None:
-        self.__receive_port: Optional[int] = None
+        self.__receive_port: int | None = None
         self.__transmit_port_settings: list[TransmitPortSetting] = []
-        self.__server: Optional[osc_server.ThreadingOSCUDPServer] = None
+        self.__server: osc_server.ThreadingOSCUDPServer | None = None
         self.__clients: list[udp_client.SimpleUDPClient] = []
         self.__q = queue.Queue()
 
