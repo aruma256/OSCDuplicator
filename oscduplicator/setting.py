@@ -22,9 +22,9 @@ class TransmitPortSetting:
     enabled: bool
 
     def __post_init__(self):
-        self.validate_name(self.name)
-        self.validate_port(self.port)
-        self.validate_enabled(self.enabled)
+        self.name = self.validate_name(self.name)
+        self.port = self.validate_port(self.port)
+        self.enabled = self.validate_enabled(self.enabled)
 
     def __setattr__(self, key: str, value: Any) -> None:
         """
@@ -37,9 +37,9 @@ class TransmitPortSetting:
         value: any
             代入したい値
         """
-        validate_methoad = getattr(self, f"validate_{key}", None)
-        if validate_methoad:
-            value = validate_methoad(value)
+        validate_method = getattr(self, f"validate_{key}", None)
+        if validate_method:
+            value = validate_method(value)
         super().__setattr__(key, value)
 
     @staticmethod
@@ -63,6 +63,7 @@ class TransmitPortSetting:
                 "Expected instance of type 'str' for attribute 'name',"
                 f"but got '{type(name).__name__}'."
             )
+        return name
 
     @staticmethod
     def validate_port(port):
@@ -83,7 +84,7 @@ class TransmitPortSetting:
                 "Expected instance of type 'int' for attribute 'port',"
                 f" but got '{type(port).__name__}'."
             )
-        if not (0 <= port <= 65535):  # standard port range for TCP/UDP
+        if not (0 <= port <= 65535):
             raise ValueError(
                 "Invalid 'port' value. Expected a number between 0 and 65535, "
                 f"but got '{port}'."
