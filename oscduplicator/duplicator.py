@@ -66,10 +66,11 @@ class OSCDuplicator:
         port = self.receive_port if self.receive_port is not None else 9001
         dpt = dispatcher.Dispatcher()
 
+        # dpt.map("/*", print)
         dpt.map("/*", self.__queue_osc)
 
         self.__server = osc_server.ThreadingOSCUDPServer(
-            ("127.0.0.1", port), dpt
+            ("0.0.0.0", port), dpt
         )
         self.__server.serve_forever()
 
@@ -117,7 +118,7 @@ class OSCDuplicator:
             args: list = d["args"]
 
             threads = [
-                Thread(target=client.send_message, args=(address, args))
+                Thread(target=client.send_message, args=(address, args[0], ))
                 for client in clients
             ]
 
