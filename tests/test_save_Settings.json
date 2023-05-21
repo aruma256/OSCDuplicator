@@ -1,0 +1,27 @@
+{
+    "receive": {
+        "port": 8001
+    },
+    "transmit": [
+        {
+            "name": "4Yqb6wlk",
+            "port": 39668,
+            "enabled": true
+        },
+        {
+            "name": "9cmA2lZd",
+            "port": 31136,
+            "enabled": true
+        },
+        {
+            "name": "3JVeS3w7",
+            "port": 36976,
+            "enabled": true
+        },
+        {
+            "name": "fxUwxKCn",
+            "port": 3441,
+            "enabled": true
+        }
+    ]
+}

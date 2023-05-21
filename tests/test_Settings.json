@@ -4,23 +4,28 @@
     },
     "transmit": [
         {
-            "name": "test1_t",
+            "name": "test0_t",
             "port": 9001,
             "enabled": true
         },
         {
-            "name": "test2_t",
+            "name": "test1_t",
             "port": 9002,
             "enabled": true
         },
         {
-            "name": "test3_f",
+            "name": "test2_t",
             "port": 9003,
-            "enabled": false
+            "enabled": true
         },
         {
-            "name": "test3_f",
+            "name": "test3_t",
             "port": 9003,
+            "enabled": true
+        },
+        {
+            "name": "test4_f",
+            "port": 9004,
             "enabled": false
         }
     ]

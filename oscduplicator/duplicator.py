@@ -167,7 +167,7 @@ class OSCDuplicator:
         with open(file_path, "r", encoding="UTF-8") as f:
             json_dic = json.load(f)
 
-        receive_port = json_dic["receive"]
+        receive_port = json_dic["receive"]["port"]
 
         transmit_port_settings: list[TransmitPortSetting] = [
             TransmitPortSetting(**i) for i in json_dic["transmit"]
@@ -191,13 +191,13 @@ class OSCDuplicator:
             ip = socket.gethostbyname(hostname)
             str_ip = str(ip)
             return udp_client.SimpleUDPClient(str_ip, port)
-
+        
         port_l: list[int] = []
         for tps in transmit_port_settings:
             if tps.enabled:
                 port_l.append(tps.port)
 
-        port_l = set(port_l)
+        port_l = list(set(port_l))
 
         self.clients = [__client(i) for i in port_l]
 
@@ -235,10 +235,9 @@ class OSCDuplicator:
         ]
 
         save_data: dict = {
-            "receive": [{"port": self.receive_port}],
-            "transmit": transmit_settings,
+            "receive": {"port": self.receive_port},
+            "transmit": transmit_settings
         }
 
-        json_data = json.dumps(save_data)
         with open(file_path, "w", encoding="UTF-8") as f:
-            json.dump(json_data, f, indent=4)
+            json.dump(save_data, f, indent=4)
