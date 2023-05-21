@@ -8,7 +8,7 @@ class TestTransmitPortSetting:
         tps = TransmitPortSetting("Test", 8080, True)
         assert tps.name == "Test"
         assert tps.port == 8080
-        assert tps.enabled == True
+        assert tps.enabled is True
 
     def test_init_transforms_name(self):
         tps = TransmitPortSetting(1234, 8080, True)
