@@ -247,4 +247,4 @@ class OSCDuplicator:
         }
 
         with open(file_path, "w", encoding="UTF-8") as f:
-            json.dump(save_data, f, indent=4)
+            json.dump(save_data, f, indent=4, ensure_ascii=False)
