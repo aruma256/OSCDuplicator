@@ -31,8 +31,8 @@ class OSCDuplicator:
     def __init__(self) -> None:
         self.__receive_port: int | None = None
         self.__transmit_port_settings: list[TransmitPortSetting] = []
-        self.__server: osc_server.ThreadingOSCUDPServer | None = None
-        self.clients: list[udp_client.SimpleUDPClient] = []
+        self.__server: ThreadingOSCUDPServer | None = None
+        self.clients: list[SimpleUDPClient] = []
         self.__q = queue.Queue()
 
     @property
@@ -66,12 +66,12 @@ class OSCDuplicator:
         OSCサーバーを初期化し、起動する
         """
         port = self.receive_port if self.receive_port is not None else 9001
-        dpt = dispatcher.Dispatcher()
+        dpt = Dispatcher()
 
         # dpt.map("/*", print)
         dpt.map("/*", self.__queue_osc)
 
-        self.__server = osc_server.ThreadingOSCUDPServer(
+        self.__server = ThreadingOSCUDPServer(
             ("0.0.0.0", port), dpt
         )
         self.__server.serve_forever()
@@ -96,7 +96,7 @@ class OSCDuplicator:
         d = {"address": address, "args": args}
         self.__q.put(d)
 
-    def transmit_msg(self, clients: list[udp_client.SimpleUDPClient]) -> None:
+    def transmit_msg(self, clients: list[SimpleUDPClient]) -> None:
         """
         osc信号を転送する
 
@@ -193,11 +193,11 @@ class OSCDuplicator:
         Parameters
         """
 
-        def __client(port: int) -> udp_client.SimpleUDPClient:
+        def __client(port: int) -> SimpleUDPClient:
             hostname = socket.gethostname()
             ip = socket.gethostbyname(hostname)
             str_ip = str(ip)
-            return udp_client.SimpleUDPClient(str_ip, port)
+            return SimpleUDPClient(str_ip, port)
 
         port_l: list[int] = []
         for tps in transmit_port_settings:

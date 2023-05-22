@@ -2,7 +2,10 @@ import socket
 from threading import Thread
 from time import perf_counter, sleep
 
-from pythonosc import dispatcher, osc_server, udp_client
+from pythonosc.dispatcher import Dispatcher
+from pythonosc.osc_server import ThreadingOSCUDPServer
+from pythonosc.udp_client import SimpleUDPClient
+
 
 from oscduplicator.duplicator import OSCDuplicator
 
@@ -36,11 +39,11 @@ class OscRelayIntegrationTest:
         10回、pref_counterの値を送る
         """
 
-        def __client(port: int) -> udp_client.SimpleUDPClient:
+        def __client(port: int) -> SimpleUDPClient:
             hostname = socket.gethostname()
             ip = socket.gethostbyname(hostname)
             str_ip = str(ip)
-            return udp_client.SimpleUDPClient(str_ip, port)
+            return SimpleUDPClient(str_ip, port)
 
         client = __client(9000)
 
@@ -57,10 +60,10 @@ class OscRelayIntegrationTest:
         """
 
         def __launch_osc_receiver(port: int):
-            dpt = dispatcher.Dispatcher()
+            dpt = Dispatcher()
             dpt.map("/*", self.osc_handler, port)
 
-            server = osc_server.ThreadingOSCUDPServer(("0.0.0.0", port), dpt)
+            server = ThreadingOSCUDPServer(("0.0.0.0", port), dpt)
             server.serve_forever()
 
         ports = [9003, 9004, 9005, 9006]
