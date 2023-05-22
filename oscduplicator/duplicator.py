@@ -4,7 +4,9 @@ import socket
 from dataclasses import asdict
 from threading import Thread
 
-from pythonosc import dispatcher, osc_server, udp_client
+from pythonosc.dispatcher import Dispatcher
+from pythonosc.osc_server import ThreadingOSCUDPServer
+from pythonosc.udp_client import SimpleUDPClient
 from oscduplicator.setting import TransmitPortSetting
 
 
