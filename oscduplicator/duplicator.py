@@ -107,7 +107,7 @@ class OSCDuplicator:
             {"address": address, "args": args}
         """
 
-        if len(clients) <= 0:
+        if not clients:
             return
 
         while True:
