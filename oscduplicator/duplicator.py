@@ -18,7 +18,7 @@ class Duplicator:
         OSC messageを各ポートへ転送するクラスのインスタンスオブジェクト
     """
 
-    FILE_PATH = Path(".\oscduplicator\settings.json")
+    FILE_PATH = Path("./oscduplicator/settings.json")
 
     def __init__(self) -> None:
         self.settings = Settings(Duplicator.FILE_PATH)
