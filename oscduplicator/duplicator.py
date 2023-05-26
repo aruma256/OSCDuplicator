@@ -16,6 +16,8 @@ class Duplicator:
         OSC messageを受信するクラスのインスタンスオブジェクト
     transmitter: OSCTransmitter
         OSC messageを各ポートへ転送するクラスのインスタンスオブジェクト
+    is_duplicate: bool
+        dulicatorが実行されているかどうか
     """
 
     FILE_PATH = Path("./oscduplicator/settings.json")
@@ -24,6 +26,7 @@ class Duplicator:
         self.settings = Settings(Duplicator.FILE_PATH)
         self.receiver = OSCReceiver(self.settings.receive_port)
         self.transmitter = OSCTransmitter(self.receiver.q)
+        self.is_duplicate = False
 
     def start_duplicate(self, receive_port, transmit_port_settings):
         """
@@ -47,12 +50,16 @@ class Duplicator:
         self.receiver.start_receiver()
         self.transmitter.start_transmitter()
 
+        self.is_duplicate = True
+
     def stop_duplicate(self):
         """
         On stop button pushed
         """
         self.receiver.stop_receiver()
         self.transmitter.stop_transmitter()
+
+        self.is_duplicate = False
 
     def __update_settings(self, receive_port, transmit_port_settings):
         """
