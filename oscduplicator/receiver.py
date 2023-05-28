@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from threading import Thread
+from typing import Any
 from queue import Queue
 
 from pythonosc.dispatcher import Dispatcher
@@ -9,7 +10,7 @@ from pythonosc.osc_server import BlockingOSCUDPServer
 @dataclass(frozen=True)
 class OSCMessage:
     address: str
-    message: list[any]
+    message: list[Any]
 
 
 class OSCReceiver:
@@ -53,7 +54,7 @@ class OSCReceiver:
         """
         self.server.shutdown()
 
-    def q_put(self, address: str, *args: list[any]):
+    def q_put(self, address: str, *args: list[Any]):
         """
         受信したOSC messageとaddressをQueueに追加する
         """
