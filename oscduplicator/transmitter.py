@@ -4,7 +4,7 @@ import socket
 
 from pythonosc.udp_client import SimpleUDPClient
 
-from receiver import OSCMessage
+from oscduplicator.receiver import OSCMessage
 
 
 class OSCTransmitter:
@@ -32,7 +32,7 @@ class OSCTransmitter:
         )
         self.is_shutdown = False
 
-    def init_clients(self):
+    def init_clients(self, transmit_ports):
         """
         OSCクライエントを初期化
         """
@@ -43,7 +43,7 @@ class OSCTransmitter:
             str_ip = str(ip)
             return SimpleUDPClient(str_ip, port)
 
-        return [__client(i) for i in self.transmit_ports]
+        return [__client(i) for i in transmit_ports]
 
     def start_transmitter(self):
         """
