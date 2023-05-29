@@ -1,5 +1,5 @@
 import pytest
-from unittest.mock import MagicMock, patch
+from unittest.mock import patch
 from queue import Queue
 from pythonosc.udp_client import SimpleUDPClient
 from oscduplicator.transmitter import OSCTransmitter
