@@ -4,6 +4,7 @@ from queue import Queue
 from pythonosc.udp_client import SimpleUDPClient
 from oscduplicator.transmitter import OSCTransmitter
 
+
 class TestOSCTransmitter:
     @pytest.fixture
     def transmitter(self):
@@ -17,8 +18,13 @@ class TestOSCTransmitter:
         assert transmitter.clients == []
 
     def test_init_clients(self, transmitter):
-        with patch("oscduplicator.transmitter.socket.gethostname", return_value="localhost"),\
-             patch("oscduplicator.transmitter.socket.gethostbyname", return_value="127.0.0.1"):
+        with patch(
+            "oscduplicator.transmitter.socket.gethostname",
+            return_value="localhost",
+        ), patch(
+            "oscduplicator.transmitter.socket.gethostbyname",
+            return_value="127.0.0.1",
+        ):
             transmitter.transmit_ports = [8000, 8001]
             clients = transmitter.init_clients(transmitter.transmit_ports)
             assert len(clients) == 2
