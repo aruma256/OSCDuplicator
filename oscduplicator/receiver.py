@@ -54,9 +54,9 @@ class OSCReceiver:
         """
         self.server.shutdown()
 
-    def q_put(self, address: str, *args: list[Any]):
+    def q_put(self, address: str, args: list[Any]):
         """
         受信したOSC messageとaddressをQueueに追加する
         """
-        osc_message = OSCMessage(address, *args)
+        osc_message = OSCMessage(address, args)
         self.q.put(osc_message)
