@@ -2,7 +2,7 @@ import pytest
 from unittest.mock import patch
 from queue import Queue
 from pythonosc.udp_client import SimpleUDPClient
-from oscduplicator.transmitter import OSCTransmitter
+from oscduplicator.osc_transmitter import OSCTransmitter
 
 
 class TestOSCTransmitter:
@@ -19,10 +19,10 @@ class TestOSCTransmitter:
 
     def test_init_clients(self, transmitter):
         with patch(
-            "oscduplicator.transmitter.socket.gethostname",
+            "oscduplicator.osc_transmitter.socket.gethostname",
             return_value="localhost",
         ), patch(
-            "oscduplicator.transmitter.socket.gethostbyname",
+            "oscduplicator.osc_transmitter.socket.gethostbyname",
             return_value="127.0.0.1",
         ):
             transmitter.transmit_ports = [8000, 8001]
@@ -32,7 +32,7 @@ class TestOSCTransmitter:
                 assert isinstance(client, SimpleUDPClient)
 
     def test_start_transmitter(self, transmitter):
-        with patch("oscduplicator.transmitter.Thread.start") as mock_start:
+        with patch("oscduplicator.osc_transmitter.Thread.start") as mock_start:
             transmitter.start_transmitter()
             mock_start.assert_called_once()
 
