@@ -1,4 +1,5 @@
 from pathlib import Path
+from queue import Queue
 
 from oscduplicator.osc_receiver import OSCReceiver
 from oscduplicator.settings import Settings
@@ -12,6 +13,8 @@ class Duplicator:
     Attributes
     settings: Settings
         送信・受信に関する設定を保持するクラスのインスタンスオブジェクト
+    queue: Queue
+        受信したOSC messageの複製送信待ちキュー
     receiver: OSCReceiver
         OSC messageを受信するクラスのインスタンスオブジェクト
     transmitter: OSCTransmitter
@@ -24,8 +27,9 @@ class Duplicator:
 
     def __init__(self) -> None:
         self.settings = Settings(Duplicator.FILE_PATH)
-        self.receiver = OSCReceiver(self.settings.receive_port)
-        self.transmitter = OSCTransmitter(self.receiver.q)
+        self.queue = Queue()
+        self.receiver: OSCReceiver | None = None
+        self.transmitter = OSCTransmitter(self.queue)
         self.is_duplicate = False
 
     def start_duplicate(self, receive_port, transmit_port_settings):
@@ -41,13 +45,12 @@ class Duplicator:
         """
         self.__update_settings(receive_port, transmit_port_settings)
 
-        self.receiver.receive_port = self.settings.receive_port
-        self.receiver.init_server()
+        self.receiver = OSCReceiver(self.settings.receive_port, self.queue)
 
         self.transmitter.transmit_ports = self.settings.get_transmit_ports()
         self.transmitter.init_clients(self.transmitter.transmit_ports)
 
-        self.receiver.start_receiver()
+        self.receiver.start()
         self.transmitter.start_transmitter()
 
         self.is_duplicate = True
@@ -56,7 +59,9 @@ class Duplicator:
         """
         On stop button pushed
         """
-        self.receiver.stop_receiver()
+        if self.receiver:
+            self.receiver.stop()
+
         self.transmitter.stop_transmitter()
 
         self.is_duplicate = False
