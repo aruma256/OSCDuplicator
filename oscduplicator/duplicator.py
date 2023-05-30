@@ -1,4 +1,5 @@
 from pathlib import Path
+from queue import Queue
 
 from oscduplicator.osc_receiver import OSCReceiver
 from oscduplicator.settings import Settings
@@ -24,8 +25,9 @@ class Duplicator:
 
     def __init__(self) -> None:
         self.settings = Settings(Duplicator.FILE_PATH)
-        self.receiver = OSCReceiver(self.settings.receive_port)
-        self.transmitter = OSCTransmitter(self.receiver.q)
+        queue = Queue()
+        self.receiver = OSCReceiver(self.settings.receive_port, queue)
+        self.transmitter = OSCTransmitter(queue)
         self.is_duplicate = False
 
     def start_duplicate(self, receive_port, transmit_port_settings):

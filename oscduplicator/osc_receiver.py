@@ -23,14 +23,14 @@ class OSCReceiver:
         OSC信号を受信するためのポート番号
     server: BlockingOSCUDPServer
         OSC信号を受信するためのサーバー
-    q: Queue
+    _message_queue: Queue
         受信したOSC messageを格納するキュー
     """
 
-    def __init__(self, receive_port: int) -> None:
+    def __init__(self, receive_port: int, message_queue: Queue) -> None:
         self.receive_port: int = receive_port
         self.server: BlockingOSCUDPServer = self.init_server()
-        self.q = Queue()
+        self._message_queue = message_queue
 
     def init_server(self):
         """
@@ -59,4 +59,4 @@ class OSCReceiver:
         受信したOSC messageとaddressをQueueに追加する
         """
         osc_message = OSCMessage(address, args)
-        self.q.put(osc_message)
+        self._message_queue.put(osc_message)
