@@ -1,4 +1,4 @@
-import unittest.mock as mock
+from unittest.mock import Mock, patch
 from queue import Queue
 
 from oscduplicator.osc_receiver import OSCReceiver
@@ -14,9 +14,9 @@ def test_init():
 
 
 def test_start():
-    with mock.patch(
+    with patch(
         "oscduplicator.osc_receiver.BlockingOSCUDPServer", autospec=True
-    ) as mock_server, mock.patch(
+    ) as mock_server, patch(
         "oscduplicator.osc_receiver.Thread", autospec=True
     ) as mock_thread:
         receiver = OSCReceiver(5000, Queue())
@@ -34,7 +34,7 @@ def test_stop():
     receiver._server = None
     receiver.stop()  # start前に呼ばれてもエラーにならない
 
-    receiver._server = mock_server = mock.Mock()
+    receiver._server = mock_server = Mock()
     receiver.stop()
     mock_server.shutdown.assert_called_once()
 
