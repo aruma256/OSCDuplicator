@@ -44,12 +44,12 @@ class Duplicator:
         self.__update_settings(receive_port, transmit_port_settings)
 
         self.receiver.receive_port = self.settings.receive_port
-        self.receiver.init_server()
+        self.receiver._create_server()
 
         self.transmitter.transmit_ports = self.settings.get_transmit_ports()
         self.transmitter.init_clients(self.transmitter.transmit_ports)
 
-        self.receiver.start_receiver()
+        self.receiver.start()
         self.transmitter.start_transmitter()
 
         self.is_duplicate = True
@@ -58,7 +58,7 @@ class Duplicator:
         """
         On stop button pushed
         """
-        self.receiver.stop_receiver()
+        self.receiver.stop()
         self.transmitter.stop_transmitter()
 
         self.is_duplicate = False

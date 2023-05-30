@@ -29,32 +29,32 @@ class OSCReceiver:
 
     def __init__(self, receive_port: int, message_queue: Queue) -> None:
         self.receive_port: int = receive_port
-        self.server: BlockingOSCUDPServer = self.init_server()
+        self.server: BlockingOSCUDPServer = self._create_server()
         self._message_queue = message_queue
 
-    def init_server(self):
+    def _create_server(self):
         """
-        OSCサーバーを初期化
+        OSCサーバーを作成する
         """
         dpt = Dispatcher()
-        dpt.map("*", self.q_put)
+        dpt.map("*", self.message_handler)
 
         return BlockingOSCUDPServer(("0, 0, 0, 0", self.receive_port), dpt)
 
-    def start_receiver(self):
+    def start(self):
         """
         OSCReceiverを起動する
         """
         th = Thread(target=self.server.serve_forever)
         th.start()
 
-    def stop_receiver(self):
+    def stop(self):
         """
         OSCReceiverを終了する
         """
         self.server.shutdown()
 
-    def q_put(self, address: str, args: list[Any]):
+    def message_handler(self, address: str, args: list[Any]):
         """
         受信したOSC messageとaddressをQueueに追加する
         """

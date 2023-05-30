@@ -5,7 +5,7 @@ import pytest
 from oscduplicator.osc_receiver import OSCReceiver
 
 
-def test_osc_receiver_init():
+def test_init():
     with mock.patch(
         "oscduplicator.osc_receiver.BlockingOSCUDPServer", autospec=True
     ) as mock_server:
@@ -17,14 +17,14 @@ def test_osc_receiver_init():
         assert receiver._message_queue is queue
 
 
-def test_start_receiver():
+def test_start():
     with mock.patch(
         "oscduplicator.osc_receiver.BlockingOSCUDPServer", autospec=True
     ) as mock_server, mock.patch(
         "oscduplicator.osc_receiver.Thread", autospec=True
     ) as mock_thread:
         receiver = OSCReceiver(5000, Queue())
-        receiver.start_receiver()
+        receiver.start()
 
         mock_thread.assert_called_once_with(
             target=mock_server.return_value.serve_forever
@@ -32,24 +32,24 @@ def test_start_receiver():
         mock_thread.return_value.start.assert_called_once()
 
 
-def test_stop_receiver():
+def test_stop():
     with mock.patch(
         "oscduplicator.osc_receiver.BlockingOSCUDPServer", autospec=True
     ) as mock_server:
         receiver = OSCReceiver(5000, Queue())
-        receiver.stop_receiver()
+        receiver.stop()
 
         mock_server.return_value.shutdown.assert_called_once()
 
 
-def test_q_put():
+def test_message_handler():
     with mock.patch(
         "oscduplicator.osc_receiver.BlockingOSCUDPServer", autospec=True
     ):
         receiver = OSCReceiver(5000, Queue())
         address = "/test"
         args = ["message"]
-        receiver.q_put(address, args)
+        receiver.message_handler(address, args)
 
         try:
             message = receiver._message_queue.get_nowait()
