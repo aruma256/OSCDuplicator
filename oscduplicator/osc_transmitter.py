@@ -4,7 +4,7 @@ import socket
 
 from pythonosc.udp_client import SimpleUDPClient
 
-from oscduplicator.receiver import OSCMessage
+from oscduplicator.osc_receiver import OSCMessage
 
 
 class OSCTransmitter:

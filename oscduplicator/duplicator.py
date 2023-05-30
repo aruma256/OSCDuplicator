@@ -1,8 +1,8 @@
 from pathlib import Path
 
-from oscduplicator.receiver import OSCReceiver
+from oscduplicator.osc_receiver import OSCReceiver
 from oscduplicator.settings import Settings
-from oscduplicator.transmitter import OSCTransmitter
+from oscduplicator.osc_transmitter import OSCTransmitter
 
 
 class Duplicator:
