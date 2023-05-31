@@ -1,13 +1,5 @@
-from typing import Optional
 import flet as ft
-from flet import (
-    Container,
-    UserControl,
-    ElevatedButton,
-    Text,
-    TextField,
-    Row
-)
+from flet import UserControl, TextField
 
 from duplicator import Duplicator
 
@@ -33,7 +25,7 @@ class ReceiverField(UserControl):
             keyboard_type=ft.KeyboardType.NUMBER,
             on_blur=self.on_blur,
             width=200,
-            counter_style=ft.TextStyle(color=ft.colors.RED)
+            counter_style=ft.TextStyle(color=ft.colors.RED),
         )
 
     def build(self):
@@ -43,7 +35,7 @@ class ReceiverField(UserControl):
         try:
             self.validate_port(self.input_field.value)
         except (TypeError, ValueError) as e:
-            self.input_field.counter_text="0-65535"
+            self.input_field.counter_text = "0-65535"
         else:
             self.input_field.counter_text = None
             self.duplicator.settings.receive_port = self.input_field.value

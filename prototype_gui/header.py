@@ -1,11 +1,5 @@
 import flet as ft
-from flet import (
-    Container,
-    UserControl,
-    ElevatedButton,
-    Text,
-    Row
-)
+from flet import Container, UserControl, ElevatedButton, Text, Row
 
 from duplicator import Duplicator
 
@@ -40,7 +34,7 @@ class Header(UserControl):
                 alignment=ft.MainAxisAlignment.SPACE_AROUND,
             ),
             bgcolor=ft.colors.INDIGO_50,
-            margin=0
+            margin=0,
         )
 
     def init_status_text(self):
@@ -48,9 +42,7 @@ class Header(UserControl):
         status_textの初期設定
         """
         return Text(
-            value="Duplicator stopped",
-            size=40,
-            weight=ft.FontWeight.BOLD
+            value="Duplicator stopped", size=40, weight=ft.FontWeight.BOLD
         )
 
     def init_run_button(self):
@@ -60,10 +52,8 @@ class Header(UserControl):
         return ElevatedButton(
             text="stop",
             bgcolor=ft.colors.LIGHT_GREEN_ACCENT_400,
-            style=ft.ButtonStyle(
-                shape=ft.RoundedRectangleBorder(radius=10)
-            ),
-            color = ft.colors.WHITE,
+            style=ft.ButtonStyle(shape=ft.RoundedRectangleBorder(radius=10)),
+            color=ft.colors.WHITE,
             on_click=self.run_button_clicked,
         )
 
@@ -72,10 +62,13 @@ class Header(UserControl):
         run_buttonが押された場合の処理
         """
         if not self.duolicator.is_duplicate:
-            self.duolicator.start_duplicate(self.duolicator.settings.receive_port, self.duolicator.settings.transmit_port_settings)
+            self.duolicator.start_duplicate(
+                self.duolicator.settings.receive_port,
+                self.duolicator.settings.transmit_port_settings,
+            )
         else:
             self.duolicator.stop_duplicate()
-        
+
         self.__update_status_text()
         self.__update_run_button()
 

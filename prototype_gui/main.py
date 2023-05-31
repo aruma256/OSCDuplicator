@@ -13,5 +13,6 @@ def main(page: Page):
 
     page.add(app)
 
+
 if __name__ == "__main__":
     app(target=main)
