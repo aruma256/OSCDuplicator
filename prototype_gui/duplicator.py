@@ -11,7 +11,7 @@ class Duplicator:
     is_duplicate: bool
     """
 
-    FILE_PATH = Path("./settings.json")
+    FILE_PATH = Path(".\prototype_gui\settings.json")
 
     def __init__(self) -> None:
         self.settings = Settings(Duplicator.FILE_PATH)
