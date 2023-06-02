@@ -68,7 +68,7 @@ class TransmitterField(UserControl):
     def on_port_blur(self, e):
         try:
             self.validate_port(self.port.value)
-        except (TypeError, ValueError) as e:
+        except (TypeError, ValueError):
             self.port.counter_text = "0-65535"
             self.duplicator.settings.transmit_port_settings[
                 self.index

@@ -34,7 +34,7 @@ class ReceiverField(UserControl):
     def on_blur(self, e):
         try:
             self.validate_port(self.input_field.value)
-        except (TypeError, ValueError) as e:
+        except (TypeError, ValueError):
             self.input_field.counter_text = "0-65535"
         else:
             self.input_field.counter_text = None
