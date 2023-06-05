@@ -1,29 +1,26 @@
-import unittest.mock as mock
-from queue import Empty
-import pytest
+from unittest.mock import Mock, patch
+from queue import Queue
 
 from oscduplicator.osc_receiver import OSCReceiver
 
 
-def test_osc_receiver_init():
-    with mock.patch(
+def test_init():
+    queue = Queue()
+    receiver = OSCReceiver(5000, queue)
+
+    assert receiver.receive_port == 5000
+    assert receiver._server is None
+    assert receiver._message_queue is queue
+
+
+def test_start():
+    with patch(
         "oscduplicator.osc_receiver.BlockingOSCUDPServer", autospec=True
-    ) as mock_server:
-        receiver = OSCReceiver(5000)
-
-        assert receiver.receive_port == 5000
-        assert receiver.server is mock_server.return_value
-        assert receiver.q.empty()
-
-
-def test_start_receiver():
-    with mock.patch(
-        "oscduplicator.osc_receiver.BlockingOSCUDPServer", autospec=True
-    ) as mock_server, mock.patch(
+    ) as mock_server, patch(
         "oscduplicator.osc_receiver.Thread", autospec=True
     ) as mock_thread:
-        receiver = OSCReceiver(5000)
-        receiver.start_receiver()
+        receiver = OSCReceiver(5000, Queue())
+        receiver.start()
 
         mock_thread.assert_called_once_with(
             target=mock_server.return_value.serve_forever
@@ -31,29 +28,27 @@ def test_start_receiver():
         mock_thread.return_value.start.assert_called_once()
 
 
-def test_stop_receiver():
-    with mock.patch(
-        "oscduplicator.osc_receiver.BlockingOSCUDPServer", autospec=True
-    ) as mock_server:
-        receiver = OSCReceiver(5000)
-        receiver.stop_receiver()
+def test_stop():
+    receiver = OSCReceiver(5000, Queue())
 
-        mock_server.return_value.shutdown.assert_called_once()
+    receiver._server = None
+    receiver.stop()  # start前に呼ばれてもエラーにならない
+
+    receiver._server = mock_server = Mock()
+    receiver.stop()
+    mock_server.shutdown.assert_called_once()
 
 
-def test_q_put():
-    with mock.patch(
-        "oscduplicator.osc_receiver.BlockingOSCUDPServer", autospec=True
-    ):
-        receiver = OSCReceiver(5000)
-        address = "/test"
-        args = ["message"]
-        receiver.q_put(address, args)
+def test_message_handler():
+    queue = Queue()
+    receiver = OSCReceiver(5000, queue)
+    address = "/test"
+    args = ["message"]
+    receiver.message_handler(address, args)
 
-        try:
-            message = receiver.q.get_nowait()
-        except Empty:
-            pytest.fail("Queue should not be empty")
+    assert queue.qsize() == 1
 
-        assert message.address == address
-        assert message.message == args
+    message = receiver._message_queue.get_nowait()
+
+    assert message.address == address
+    assert message.message == args
