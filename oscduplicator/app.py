@@ -7,19 +7,35 @@ APP_TITLE = "OSCDuplicator"
 class App:
     def main(self, page: ft.Page):
         page.title = APP_TITLE
+        page.horizontal_alignment = "center"
+        page.window_width, page.window_height = 600, 800
+        page.add(self.create_header())
 
-        self._app_bar = ft.AppBar(
-            title=ft.Text(APP_TITLE),
-            bgcolor=ft.colors.SURFACE_VARIANT,
+    def create_header(self) -> ft.Control:
+        return ft.Container(
+            width=600,
+            height=80,
+            content=ft.Row(
+                [
+                    ft.Text(
+                        value="Duplicator stopped",
+                        size=40,
+                        weight=ft.FontWeight.BOLD
+                    ),
+                    ft.ElevatedButton(
+                        text="stop",
+                        bgcolor=ft.colors.LIGHT_GREEN_ACCENT_400,
+                        style=ft.ButtonStyle(
+                            shape=ft.RoundedRectangleBorder(radius=10)
+                        ),
+                        color=ft.colors.WHITE,
+                    )
+                ],
+                alignment=ft.MainAxisAlignment.SPACE_AROUND,
+            ),
+            bgcolor=ft.colors.INDIGO_50,
+            margin=0,
         )
-        self._sample_text = ft.Text("sample aaaa")
-        page.controls.extend(
-            [
-                self._app_bar,
-                self._sample_text,
-            ],
-        )
-        page.update()
 
 
 def start():
