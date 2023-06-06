@@ -47,8 +47,9 @@ class Duplicator:
 
         self.receiver = OSCReceiver(self.settings.receive_port, self.queue)
 
-        self.transmitter.transmit_ports = self.settings.get_transmit_ports()
-        self.transmitter.create_clients(self.transmitter.transmit_ports)
+        transmit_ports = self.settings.get_transmit_ports()
+        for port in transmit_ports:
+            self.transmitter.add_destination_port(port)
 
         self.receiver.start()
         self.transmitter.start()
@@ -62,7 +63,7 @@ class Duplicator:
         if self.receiver:
             self.receiver.stop()
 
-        self.transmitter.stop()
+        self.transmitter.pause()
 
         self.is_duplicate = False
 
