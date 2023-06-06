@@ -14,7 +14,7 @@ class ReceiverContainer(ft.UserControl):
 
         return ft.Container(
             width=600,
-            height=80,
+            padding=20,
             bgcolor=ft.colors.LIGHT_BLUE_50,
             content=ft.Column(
                 controls=[

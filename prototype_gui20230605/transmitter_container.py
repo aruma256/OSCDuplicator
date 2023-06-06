@@ -9,11 +9,15 @@ class TransmitterContainer(ft.UserControl):
             [9003, "ドン・あるま", True],
             [9006, "はかまｲﾝｼｬﾝﾊｲ", False],
         ]
+        self.add_button = ft.ElevatedButton(
+            text="追加", icon=ft.icons.ADD, width=440
+        )
 
     def build(self):
         return ft.Container(
             width=600,
             bgcolor=ft.colors.LIGHT_BLUE_50,
+            padding=20,
             content=ft.Column(
                 controls=[
                     ft.Text(value="転送", size=16),
@@ -25,6 +29,10 @@ class TransmitterContainer(ft.UserControl):
                             ft.DataColumn(ft.Text("")),
                         ],
                         rows=self.DataTableRows(),
+                    ),
+                    ft.Row(
+                        controls=[self.add_button],
+                        alignment=ft.MainAxisAlignment.START,
                     ),
                 ]
             ),
