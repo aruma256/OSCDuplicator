@@ -1,15 +1,14 @@
 import flet as ft
-from typing import Callable
-
-from duplicator import Duplicator
 
 
 class TransmitterContainer(ft.UserControl):
-    def __init__(self, duplicator: Duplicator, on_edit_clicked: Callable):
+    def __init__(self):
         super().__init__()
-        self.duplicator = duplicator
-        self.on_edit_clicked = on_edit_clicked
-        self.transmitter_settings = self.init_transmitter_settings()
+        self.transmitter_settings = [
+            [9002, "こゃーそ", True],
+            [9003, "ドン・あるま", True],
+            [9006, "はかまｲﾝｼｬﾝﾊｲ", False],
+        ]
 
     def build(self):
         return ft.Container(
@@ -50,16 +49,3 @@ class TransmitterContainer(ft.UserControl):
                 cell(setting[0], setting[1], setting[2])
                 for setting in self.transmitter_settings
             ]
-
-    def init_transmitter_settings(self):
-        transmitter_settings = []
-
-        settings = self.duplicator.settings.transmit_port_settings
-
-        if settings:
-            transmitter_settings = [
-                [setting.port, setting.name, setting.enabled]
-                for setting in settings
-            ]
-
-        return transmitter_settings

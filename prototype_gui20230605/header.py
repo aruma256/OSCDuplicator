@@ -1,20 +1,9 @@
 import flet as ft
-from typing import Callable
-
-from duplicator import Duplicator
 
 
 class Header(ft.UserControl):
-    def __init__(
-        self,
-        duplicator: Duplicator,
-        start_duplicate: Callable,
-        stop_duplicate: Callable,
-    ):
+    def __init__(self):
         super().__init__()
-        self.duplicator = duplicator
-        self.start_duplicate = start_duplicate
-        self.stop_duplicate = stop_duplicate
 
     def build(self):
         self.text = ft.Text(
@@ -26,7 +15,6 @@ class Header(ft.UserControl):
             bgcolor=ft.colors.LIGHT_GREEN_ACCENT_400,
             style=ft.ButtonStyle(shape=ft.RoundedRectangleBorder(radius=10)),
             color=ft.colors.WHITE,
-            on_click=self.on_button_clicked,
         )
 
         return ft.Container(
@@ -40,20 +28,12 @@ class Header(ft.UserControl):
             margin=0,
         )
 
-    def on_button_clicked(self, _):
-        if not self.duplicator.is_duplicate:
-            self.start_duplicate()
-        else:
-            self.stop_duplicate()
-
-        self.update()
-
     def update_status_text(self):
         """
         dupkicatorの実行状態に応じて、
         テキストを変更
         """
-        if not self.duplicator.is_duplicate:
+        if not False:
             self.text.value = "Duplicator stopped"
         else:
             self.text.value = "Duplicator started"
@@ -63,7 +43,7 @@ class Header(ft.UserControl):
         dupkicatorの実行状態に応じて、
         ボタンのテキスト・レイアウトを変更
         """
-        if not self.duplicator.is_duplicate:
+        if not False:
             self.button.text = "start"
             self.button.bgcolor = ft.colors.LIGHT_GREEN_ACCENT_400
 

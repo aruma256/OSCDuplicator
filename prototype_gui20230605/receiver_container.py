@@ -1,25 +1,12 @@
 import flet as ft
-from typing import Callable
-
-from duplicator import Duplicator
 
 
 class ReceiverContainer(ft.UserControl):
-    def __init__(
-        self,
-        duplicator: Duplicator,
-        start_duplicate: Callable,
-        stop_duplicate: Callable,
-    ):
+    def __init__(self):
         super().__init__()
-        self.duplicator = duplicator
-        self.start_duplicate = start_duplicate
-        self.stop_duplicate = stop_duplicate
 
     def build(self):
-        self.receive_port = ft.Text(
-            value=self.duplicator.settings.receive_port, size=20
-        )
+        self.receive_port = ft.Text(value=9001)
 
         self.edit_button = ft.ElevatedButton(
             text="編集",
@@ -36,6 +23,3 @@ class ReceiverContainer(ft.UserControl):
                 ]
             ),
         )
-
-    def on_button_clicked(self):
-        pass
