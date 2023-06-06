@@ -14,7 +14,7 @@ def test_init():
     assert len(transmitter.clients) == 0
 
 
-def test_init_clients():
+def test_create_clients():
     transmitter = OSCTransmitter(Queue())
     with patch(
         "oscduplicator.osc_transmitter.socket.gethostname",
@@ -24,20 +24,20 @@ def test_init_clients():
         return_value="127.0.0.1",
     ):
         transmitter.transmit_ports = [8000, 8001]
-        clients = transmitter.init_clients(transmitter.transmit_ports)
+        clients = transmitter.create_clients(transmitter.transmit_ports)
         assert len(clients) == 2
         for client in clients:
             assert isinstance(client, SimpleUDPClient)
 
 
-def test_start_transmitter():
+def test_start():
     transmitter = OSCTransmitter(Queue())
     with patch("oscduplicator.osc_transmitter.Thread.start") as mock_start:
-        transmitter.start_transmitter()
+        transmitter.start()
         mock_start.assert_called_once()
 
 
-def test_stop_transmitter():
+def test_stop():
     transmitter = OSCTransmitter(Queue())
-    transmitter.stop_transmitter()
+    transmitter.stop()
     assert transmitter.is_shutdown

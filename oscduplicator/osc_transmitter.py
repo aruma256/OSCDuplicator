@@ -27,12 +27,12 @@ class OSCTransmitter:
     def __init__(self, q: Queue) -> None:
         self.transmit_ports: list[int] = []
         self._q: Queue = q
-        self.clients: list[SimpleUDPClient] = self.init_clients(
+        self.clients: list[SimpleUDPClient] = self.create_clients(
             self.transmit_ports
         )
         self.is_shutdown = False
 
-    def init_clients(self, transmit_ports):
+    def create_clients(self, transmit_ports):
         """
         OSCクライエントを初期化
         """
@@ -45,20 +45,20 @@ class OSCTransmitter:
 
         return [__client(i) for i in transmit_ports]
 
-    def start_transmitter(self):
-        """
-        OSCTransmitterを起動
-        """
-        th = Thread(target=self.transmit_forever)
-        th.start()
+    def start(self):
+        thread = Thread(target=self._transmit_forever)
+        thread.start()
 
-    def transmit_forever(self):
+    def stop(self):
+        self.is_shutdown = True
+
+    def _transmit_forever(self):
         self.is_shutdown = False
 
         while not self.is_shutdown:
-            self.transmit_message(self._q, self.clients)
+            self._transmit_message(self._q, self.clients)
 
-    def transmit_message(self, q: Queue, clients: list[SimpleUDPClient]):
+    def _transmit_message(self, q: Queue, clients: list[SimpleUDPClient]):
         if not clients:
             osc_message: OSCMessage = q.get()
 
@@ -66,6 +66,3 @@ class OSCTransmitter:
                 client.send_message(osc_message.address, osc_message.message)
 
             q.task_done()
-
-    def stop_transmitter(self):
-        self.is_shutdown = True
