@@ -26,7 +26,7 @@ class OSCTransmitter:
 
     def __init__(self, q: Queue) -> None:
         self.transmit_ports: list[int] = []
-        self.__q: Queue = q
+        self._q: Queue = q
         self.clients: list[SimpleUDPClient] = self.init_clients(
             self.transmit_ports
         )
@@ -56,7 +56,7 @@ class OSCTransmitter:
         self.is_shutdown = False
 
         while not self.is_shutdown:
-            self.transmit_message(self.__q, self.clients)
+            self.transmit_message(self._q, self.clients)
 
     def transmit_message(self, q: Queue, clients: list[SimpleUDPClient]):
         if not clients:
