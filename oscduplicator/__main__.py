@@ -1,3 +1,3 @@
-from oscduplicator import app
+from oscduplicator.gui.app import start
 
-app.start()
+start()
