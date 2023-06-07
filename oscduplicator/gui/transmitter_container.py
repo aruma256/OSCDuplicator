@@ -49,7 +49,7 @@ class TransmitterContainer(ft.UserControl):
         DataTableに表示するためのDataRowのリストを作成する
         """
 
-        def cell(port="", name="", enabled=False):
+        def create_row(port="", name="", enabled=False):
             return ft.DataRow(
                 cells=[
                     ft.DataCell(ft.Text(value=port)),
@@ -66,10 +66,9 @@ class TransmitterContainer(ft.UserControl):
             )
 
         if not self.transmitter_settings:
-            return [cell()]
-
+            return [create_row()]
         else:
             return [
-                cell(setting[0], setting[1], setting[2])
+                create_row(setting[0], setting[1], setting[2])
                 for setting in self.transmitter_settings
             ]
