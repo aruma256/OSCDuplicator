@@ -12,9 +12,10 @@ class TransmitterContainer(ft.UserControl):
 
     """
 
-    def __init__(self):
+    def __init__(self, on_edit_button_clicked):
         super().__init__()
         self.transmitter_settings: list = []
+        self.on_edit_button_clicked = on_edit_button_clicked
 
     def build(self):
         return ft.Container(
@@ -58,8 +59,7 @@ class TransmitterContainer(ft.UserControl):
                     ft.DataCell(
                         ft.ElevatedButton(
                             text="編集",
-                            # on_click= partialやクロージャを
-                            # 使った関数である必要があるかも?
+                            on_click= self.on_edit_button_clicked
                         )
                     ),
                 ]

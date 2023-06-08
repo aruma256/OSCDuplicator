@@ -8,11 +8,14 @@ class ReceiverContainer(ft.UserControl):
     Attribute
     ---------
     receive_port: int
+    page_dialog: Control
+        page.dialog
     """
 
-    def __init__(self, receive_port):
+    def __init__(self, receive_port, on_edit_button_clicked):
         super().__init__()
         self.receive_port = receive_port
+        self.on_edit_button_clicked = on_edit_button_clicked
 
     def build(self):
         self.edit_button = ft.ElevatedButton(
@@ -32,6 +35,3 @@ class ReceiverContainer(ft.UserControl):
                 ]
             ),
         )
-
-    def on_edit_button_clicked(self):
-        pass
