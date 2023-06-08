@@ -12,10 +12,9 @@ class TransmitterContainer(ft.UserControl):
 
     """
 
-    def __init__(self, on_edit_button_clicked):
+    def __init__(self):
         super().__init__()
         self.transmitter_settings: list = []
-        self.on_edit_button_clicked = on_edit_button_clicked
 
     def build(self):
         return ft.Container(
@@ -58,7 +57,7 @@ class TransmitterContainer(ft.UserControl):
                     ft.DataCell(ft.Checkbox(value=enabled)),
                     ft.DataCell(
                         ft.ElevatedButton(
-                            text="編集", on_click=self.on_edit_button_clicked
+                            text="編集", on_click=self.show_transmitter_edit_dlg
                         )
                     ),
                 ]
@@ -71,3 +70,30 @@ class TransmitterContainer(ft.UserControl):
                 create_row(setting[0], setting[1], setting[2])
                 for setting in self.transmitter_settings
             ]
+
+    def show_transmitter_edit_dlg(self, e):
+        e.page.dialog = ft.AlertDialog(
+            content=ft.Column(
+                controls=[
+                    ft.Text("転送設定"),
+                    ft.Row(
+                        controls=[
+                            ft.TextField(label="port", width=100),
+                            ft.TextField(label="name", width=100),
+                        ]
+                    ),
+                ],
+                height=100,
+            ),
+            actions=[
+                ft.TextButton("確定", on_click=self.close_dlg),
+                ft.TextButton("キャンセル", on_click=self.close_dlg),
+            ],
+            actions_alignment=ft.MainAxisAlignment.END,
+        )
+        e.page.dialog.open = True
+        e.page.update()
+
+    def close_dlg(self, e):
+        e.page.dialog.open = False
+        e.page.update()
