@@ -58,8 +58,7 @@ class TransmitterContainer(ft.UserControl):
                     ft.DataCell(ft.Checkbox(value=enabled)),
                     ft.DataCell(
                         ft.ElevatedButton(
-                            text="編集",
-                            on_click= self.on_edit_button_clicked
+                            text="編集", on_click=self.on_edit_button_clicked
                         )
                     ),
                 ]

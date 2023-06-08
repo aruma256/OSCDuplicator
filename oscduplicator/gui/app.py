@@ -19,9 +19,9 @@ class App:
                             controls=[
                                 ft.TextField(label="port", width=100),
                             ]
-                        )
+                        ),
                     ],
-                    height=100
+                    height=100,
                 ),
                 actions=[
                     ft.TextButton("確定", on_click=close_dlg),
@@ -42,9 +42,9 @@ class App:
                                 ft.TextField(label="port", width=100),
                                 ft.TextField(label="name", width=100),
                             ]
-                        )
+                        ),
                     ],
-                    height=100
+                    height=100,
                 ),
                 actions=[
                     ft.TextButton("確定", on_click=close_dlg),
@@ -54,7 +54,7 @@ class App:
             )
             page.dialog.open = True
             page.update()
-        
+
         def close_dlg(_):
             page.dialog.open = False
             page.update()
@@ -64,8 +64,12 @@ class App:
         page.window_width, page.window_height = 600, 800
 
         self.header = Header()
-        self.receiver_container = ReceiverContainer(9001, show_receiver_edit_dlg)  # ポートは仮
-        self.transmitter_container = TransmitterContainer(show_transmitter_edit_dlg)
+        self.receiver_container = ReceiverContainer(
+            9001, show_receiver_edit_dlg
+        )  # ポートは仮
+        self.transmitter_container = TransmitterContainer(
+            show_transmitter_edit_dlg
+        )
 
         page.add(self.header)
         page.add(self.receiver_container)
