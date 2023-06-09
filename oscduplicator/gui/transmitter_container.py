@@ -37,7 +37,7 @@ class TransmitterContainer(ft.UserControl):
                         text="追加",
                         icon=ft.icons.ADD,
                         width=440,
-                        # on_click=
+                        on_click=self.show_transmitter_add_dlg,
                     ),
                 ]
             ),
@@ -87,6 +87,29 @@ class TransmitterContainer(ft.UserControl):
             ),
             actions=[
                 ft.TextButton("確定", on_click=self.close_dlg),
+                ft.TextButton("キャンセル", on_click=self.close_dlg),
+            ],
+            actions_alignment=ft.MainAxisAlignment.END,
+        )
+        e.page.dialog.open = True
+        e.page.update()
+
+    def show_transmitter_add_dlg(self, e):
+        e.page.dialog = ft.AlertDialog(
+            content=ft.Column(
+                controls=[
+                    ft.Text("転送設定"),
+                    ft.Row(
+                        controls=[
+                            ft.TextField(label="port", width=100),
+                            ft.TextField(label="name", width=100),
+                        ]
+                    ),
+                ],
+                height=100,
+            ),
+            actions=[
+                ft.TextButton("追加", on_click=self.close_dlg),
                 ft.TextButton("キャンセル", on_click=self.close_dlg),
             ],
             actions_alignment=ft.MainAxisAlignment.END,
