@@ -30,6 +30,7 @@ class TransmitterContainer(ft.UserControl):
                             ft.DataColumn(ft.Text("名前")),
                             ft.DataColumn(ft.Text("有効化")),
                             ft.DataColumn(ft.Text("")),
+                            ft.DataColumn(ft.Text("")),
                         ],
                         rows=self.data_table_rows(),
                     ),
@@ -60,6 +61,7 @@ class TransmitterContainer(ft.UserControl):
                             text="編集", on_click=self.show_transmitter_edit_dlg
                         )
                     ),
+                    ft.DataCell(ft.IconButton(icon=ft.icons.DELETE_FOREVER)),
                 ]
             )
 
