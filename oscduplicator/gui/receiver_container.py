@@ -8,8 +8,6 @@ class ReceiverContainer(ft.UserControl):
     Attribute
     ---------
     receive_port: int
-    page_dialog: Control
-        page.dialog
     """
 
     def __init__(self, receive_port):
