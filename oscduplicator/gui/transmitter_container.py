@@ -38,7 +38,7 @@ class TransmitterContainer(ft.UserControl):
                         text="追加",
                         icon=ft.icons.ADD,
                         width=440,
-                        on_click=self.show_transmitter_add_dlg,
+                        on_click=self.show_transmitter_add_dialog,
                     ),
                 ]
             ),
@@ -58,7 +58,8 @@ class TransmitterContainer(ft.UserControl):
                     ft.DataCell(ft.Checkbox(value=enabled)),
                     ft.DataCell(
                         ft.ElevatedButton(
-                            text="編集", on_click=self.show_transmitter_edit_dlg
+                            text="編集",
+                            on_click=self.show_transmitter_edit_dialog,
                         )
                     ),
                     ft.DataCell(ft.IconButton(icon=ft.icons.DELETE_FOREVER)),
@@ -73,7 +74,7 @@ class TransmitterContainer(ft.UserControl):
                 for setting in self.transmitter_settings
             ]
 
-    def show_transmitter_edit_dlg(self, e):
+    def show_transmitter_edit_dialog(self, e):
         e.page.dialog = ft.AlertDialog(
             content=ft.Column(
                 controls=[
@@ -88,15 +89,15 @@ class TransmitterContainer(ft.UserControl):
                 height=100,
             ),
             actions=[
-                ft.TextButton("確定", on_click=self.close_dlg),
-                ft.TextButton("キャンセル", on_click=self.close_dlg),
+                ft.TextButton("確定", on_click=self.close_dialog),
+                ft.TextButton("キャンセル", on_click=self.close_dialog),
             ],
             actions_alignment=ft.MainAxisAlignment.END,
         )
         e.page.dialog.open = True
         e.page.update()
 
-    def show_transmitter_add_dlg(self, e):
+    def show_transmitter_add_dialog(self, e):
         e.page.dialog = ft.AlertDialog(
             content=ft.Column(
                 controls=[
@@ -111,14 +112,14 @@ class TransmitterContainer(ft.UserControl):
                 height=100,
             ),
             actions=[
-                ft.TextButton("追加", on_click=self.close_dlg),
-                ft.TextButton("キャンセル", on_click=self.close_dlg),
+                ft.TextButton("追加", on_click=self.close_dialog),
+                ft.TextButton("キャンセル", on_click=self.close_dialog),
             ],
             actions_alignment=ft.MainAxisAlignment.END,
         )
         e.page.dialog.open = True
         e.page.update()
 
-    def close_dlg(self, e):
+    def close_dialog(self, e):
         e.page.dialog.open = False
         e.page.update()
