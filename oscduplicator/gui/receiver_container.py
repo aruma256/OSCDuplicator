@@ -54,7 +54,6 @@ class ReceiverContainer(ft.UserControl):
             ],
             actions_alignment=ft.MainAxisAlignment.END,
         )
-        print(type(e))
         e.page.dialog.open = True
         e.page.update()
 
