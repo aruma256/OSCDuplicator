@@ -16,7 +16,7 @@ class ReceiverContainer(ft.UserControl):
 
     def build(self):
         self.edit_button = ft.ElevatedButton(
-            text="編集", on_click=self.on_edit_button_clicked
+            text="編集", on_click=self.show_receiver_edit_dialog
         )
 
         return ft.Container(
@@ -33,5 +33,28 @@ class ReceiverContainer(ft.UserControl):
             ),
         )
 
-    def on_edit_button_clicked(self):
-        pass
+    def show_receiver_edit_dialog(self, e):
+        e.page.dialog = ft.AlertDialog(
+            content=ft.Column(
+                controls=[
+                    ft.Text("受信設定"),
+                    ft.Row(
+                        controls=[
+                            ft.TextField(label="port", width=100),
+                        ]
+                    ),
+                ],
+                height=100,
+            ),
+            actions=[
+                ft.TextButton("確定", on_click=self.close_dialog),
+                ft.TextButton("キャンセル", on_click=self.close_dialog),
+            ],
+            actions_alignment=ft.MainAxisAlignment.END,
+        )
+        e.page.dialog.open = True
+        e.page.update()
+
+    def close_dialog(self, e):  # 仮
+        e.page.dialog.open = False
+        e.page.update()
