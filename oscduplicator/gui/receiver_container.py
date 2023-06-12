@@ -53,21 +53,21 @@ class ReceiverContainer(ft.UserControl):
                 height=100,
             ),
             actions=[
-                ft.TextButton("確定", on_click=self.on_confilm),
-                ft.TextButton("キャンセル", on_click=self.on_cansel),
+                ft.TextButton("確定", on_click=self.on_confirm),
+                ft.TextButton("キャンセル", on_click=self.on_cancel),
             ],
             actions_alignment=ft.MainAxisAlignment.END,
         )
         e.page.dialog.open = True
         e.page.update()
 
-    def on_confilm(self, e):
+    def on_confirm(self, e):
         self.duplicator.settings.receive_port = self.port_edit_field.value
         self.port_text.value = self.duplicator.settings.receive_port
         e.page.dialog.open = False
         e.page.update()
         self.update()
 
-    def on_cansel(self, e):
+    def on_cancel(self, e):
         e.page.dialog.open = False
         e.page.update()
