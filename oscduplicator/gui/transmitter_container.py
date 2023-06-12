@@ -12,8 +12,9 @@ class TransmitterContainer(ft.UserControl):
 
     """
 
-    def __init__(self):
+    def __init__(self, duplicator):
         super().__init__()
+        self.duplicator = duplicator
         self.transmitter_settings: list = []
 
     def build(self):
