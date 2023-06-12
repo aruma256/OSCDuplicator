@@ -1,5 +1,6 @@
 import flet as ft
 
+from oscduplicator.duplicator import Duplicator
 
 from oscduplicator.gui.header import Header
 from oscduplicator.gui.receiver_container import ReceiverContainer
@@ -14,9 +15,11 @@ class App:
         page.horizontal_alignment = "center"
         page.window_width, page.window_height = 600, 800
 
-        self.header = Header()
-        self.receiver_container = ReceiverContainer(9001)  # ポートは仮
-        self.transmitter_container = TransmitterContainer()
+        self.duplicator = Duplicator()
+
+        self.header = Header(self.duplicator)
+        self.receiver_container = ReceiverContainer(self.duplicator)  # ポートは仮
+        self.transmitter_container = TransmitterContainer(self.duplicator)
 
         page.add(self.header)
         page.add(self.receiver_container)
