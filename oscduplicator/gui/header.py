@@ -1,13 +1,16 @@
 import flet as ft
 
+from oscduplicator.duplicator import Duplicator
+
 
 class Header(ft.UserControl):
     """
     GUIのヘッダー部分
     """
 
-    def __init__(self):
+    def __init__(self, duplicator: Duplicator):
         super().__init__()
+        self.duplicator = duplicator
 
     def build(self):
         self.text = ft.Text(
