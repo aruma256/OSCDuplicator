@@ -61,12 +61,16 @@ class TransmitterContainer(ft.UserControl):
     def create_row(self, port="", name="", enabled=False):
         port_text_field = ft.Text(value=port)
         name_text_field = ft.Text(value=name)
+        checkbox = ft.Checkbox(value=enabled)
+        checkbox.on_change = partial(
+            self.on_check_box_change, checkbox, port_text_field
+        )
 
         return ft.DataRow(
             cells=[
                 ft.DataCell(port_text_field),
                 ft.DataCell(name_text_field),
-                ft.DataCell(ft.Checkbox(value=enabled)),
+                ft.DataCell(checkbox),
                 ft.DataCell(
                     ft.IconButton(
                         icon=ft.icons.DELETE_FOREVER,
@@ -119,7 +123,7 @@ class TransmitterContainer(ft.UserControl):
         self.duplicator.settings.transmit_port_settings.append(
             [port, name, False]
         )
-        self.duplicator.transmitter.add_destination_port(port)
+        # self.duplicator.transmitter.add_destination_port(port)
         e.page.dialog.open = False
         e.page.update()
         self.update()
@@ -137,3 +141,18 @@ class TransmitterContainer(ft.UserControl):
     def on_cancel(self, e):
         e.page.dialog.open = False
         e.page.update()
+
+    def on_check_box_change(self, checkbox, port_text_field, _):
+        enabled = checkbox.value
+        port = int(port_text_field.value)
+
+        if enabled:
+            self.duplicator.settings.enable_transmit_port(port)
+            self.duplicator.transmitter.add_destination_port(port)
+        else:
+            self.duplicator.settings.disable_transmit_port(port)
+            self.duplicator.transmitter.remove_destination_port(port)
+
+        # print(self.duplicator.settings.transmit_port_settings)
+        # print(self.duplicator.transmitter._clients)
+        self.update()
