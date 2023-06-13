@@ -66,3 +66,9 @@ class Settings:
         self, transmit_port_settings: list[TransmitPortSetting]
     ):
         self.transmit_port_settings = transmit_port_settings
+
+    def remove_transmit_port_setting(self, port: int):
+        for i in range(len(self.transmit_port_settings)):
+            if self.transmit_port_settings[i][0] == port:
+                del self.transmit_port_settings[i]
+                return

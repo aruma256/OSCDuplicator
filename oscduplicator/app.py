@@ -20,7 +20,7 @@ class App:
                     ft.Text(
                         value="Duplicator stopped",
                         size=40,
-                        weight=ft.FontWeight.BOLD
+                        weight=ft.FontWeight.BOLD,
                     ),
                     ft.ElevatedButton(
                         text="stop",
@@ -29,7 +29,7 @@ class App:
                             shape=ft.RoundedRectangleBorder(radius=10)
                         ),
                         color=ft.colors.WHITE,
-                    )
+                    ),
                 ],
                 alignment=ft.MainAxisAlignment.SPACE_AROUND,
             ),

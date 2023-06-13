@@ -20,7 +20,15 @@ class TransmitterContainer(ft.UserControl):
         self.duplicator = duplicator
 
     def build(self):
-        self.settings_row = self.data_table_rows()
+        self.transmitter_data_table = ft.DataTable(
+            columns=[
+                ft.DataColumn(ft.Text("port")),
+                ft.DataColumn(ft.Text("名前")),
+                ft.DataColumn(ft.Text("有効化")),
+                ft.DataColumn(ft.Text("")),
+            ],
+            rows=self.data_table_rows(),
+        )
 
         return ft.Container(
             width=600,
@@ -29,15 +37,7 @@ class TransmitterContainer(ft.UserControl):
             content=ft.Column(
                 controls=[
                     ft.Text(value="転送", size=16),
-                    ft.DataTable(
-                        columns=[
-                            ft.DataColumn(ft.Text("port")),
-                            ft.DataColumn(ft.Text("名前")),
-                            ft.DataColumn(ft.Text("有効化")),
-                            ft.DataColumn(ft.Text("")),
-                        ],
-                        rows=self.settings_row,
-                    ),
+                    self.transmitter_data_table,
                     ft.ElevatedButton(
                         text="追加",
                         icon=ft.icons.ADD,
@@ -53,13 +53,10 @@ class TransmitterContainer(ft.UserControl):
         self.transmitter_settingsから,
         DataTableに表示するためのDataRowのリストを作成する
         """
-        if not self.duplicator.settings.transmit_port_settings:
-            return [self.create_row()]
-        else:
-            return [
-                self.create_row(setting[0], setting[1], setting[2])
-                for setting in self.duplicator.settings.transmit_port_settings
-            ]
+        return [
+            self.create_row(setting[0], setting[1], setting[2])
+            for setting in self.duplicator.settings.transmit_port_settings
+        ]
 
     def create_row(self, port="", name="", enabled=False):
         port_text_field = ft.Text(value=port)
@@ -117,10 +114,12 @@ class TransmitterContainer(ft.UserControl):
         name = name_text_field.value
 
         row = self.create_row(port, name, False)
-        self.settings_row.append(row)
+        self.transmitter_data_table.rows = [row]
+
         self.duplicator.settings.transmit_port_settings.append(
             [port, name, False]
         )
+        self.duplicator.transmitter.add_destination_port(port)
         e.page.dialog.open = False
         e.page.update()
         self.update()
@@ -131,8 +130,7 @@ class TransmitterContainer(ft.UserControl):
         self.duplicator.transmitter.remove_destination_port(port)
         self.duplicator.settings.remove_transmit_port_setting(port)
 
-        self.settings_row.clear()
-        self.settings_row.append(*self.data_table_rows())
+        self.transmitter_data_table.rows = self.data_table_rows()
 
         self.update()
 
