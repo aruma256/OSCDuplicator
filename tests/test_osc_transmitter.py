@@ -4,6 +4,7 @@ from unittest.mock import Mock
 
 from oscduplicator.osc_receiver import OSCMessage
 from oscduplicator.osc_transmitter import OSCTransmitter
+from oscduplicator.transmit_port_setting import TransmitPortSetting
 
 
 def test_init():
@@ -38,52 +39,24 @@ def test_pause():
     assert transmitter._running is False
 
 
-def test_add_destination_port():
+def test_update():
     transmitter = OSCTransmitter(Queue())
+    transmitter._clients[1234] = Mock()
 
-    # Add a new port
-    port1 = 8000
-    assert transmitter.add_destination_port(port1) is True
+    transmit_port_settings = [
+        TransmitPortSetting("test0", 9000, True),
+        TransmitPortSetting("test1", 9001, True),
+    ]
 
-    # Add the same port again
-    assert transmitter.add_destination_port(port1) is False
+    transmitter.update(transmit_port_settings)
 
-    # Add a different port
-    port2 = 9000
-    assert transmitter.add_destination_port(port2) is True
-
-    # Check if the clients dictionary is updated correctly
-    assert port1 in transmitter._clients
-    assert port2 in transmitter._clients
     assert len(transmitter._clients) == 2
-
-    # Check if the SimpleUDPClient instances are created correctly
-    assert transmitter._clients[port1]._address == OSCTransmitter.ADDRESS
-    assert transmitter._clients[port1]._port == port1
-    assert transmitter._clients[port2]._address == OSCTransmitter.ADDRESS
-    assert transmitter._clients[port2]._port == port2
+    assert 9000 in transmitter._clients
+    assert 9001 in transmitter._clients
 
 
-def test_remove_destination_port():
+def test_get_transmit_port_settings():
     transmitter = OSCTransmitter(Queue())
-
-    # Add ports
-    port1 = 8000
-    port2 = 9000
-    transmitter.add_destination_port(port1)
-    transmitter.add_destination_port(port2)
-    assert len(transmitter._clients) == 2
-
-    # Remove a port that exists
-    transmitter.remove_destination_port(port1)
-    assert port1 not in transmitter._clients
-    assert len(transmitter._clients) == 1
-
-    # Remove a port that doesn't exist
-    non_existing_port = 10000
-    #   Should not raise an error
-    transmitter.remove_destination_port(non_existing_port)
-    assert len(transmitter._clients) == 1
-
-    # Check if the other port still exists
-    assert port2 in transmitter._clients
+    transmit_port_settings = []
+    transmitter._transmit_port_settings = transmit_port_settings
+    assert transmitter.get_transmit_port_settings() is transmit_port_settings
