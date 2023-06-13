@@ -114,7 +114,7 @@ class TransmitterContainer(ft.UserControl):
         name = name_text_field.value
 
         row = self.create_row(port, name, False)
-        self.transmitter_data_table.rows = [row]
+        self.transmitter_data_table.rows.append(row)
 
         self.duplicator.settings.transmit_port_settings.append(
             [port, name, False]
