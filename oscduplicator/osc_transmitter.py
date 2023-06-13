@@ -36,8 +36,9 @@ class OSCTransmitter:
     def add_destination_port(self, port: int) -> bool:
         with self._clients_lock:
             if port not in self._clients:
-                self._clients[port] = SimpleUDPClient(OSCTransmitter.ADDRESS,
-                                                      port)
+                self._clients[port] = SimpleUDPClient(
+                    OSCTransmitter.ADDRESS, port
+                )
                 return True
             else:
                 return False

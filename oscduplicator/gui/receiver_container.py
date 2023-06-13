@@ -30,9 +30,7 @@ class ReceiverContainer(ft.UserControl):
             content=ft.Column(
                 controls=[
                     ft.Text(value="受信", size=16),
-                    ft.Row(
-                        [self.port_text, self.edit_button]
-                    ),
+                    ft.Row([self.port_text, self.edit_button]),
                 ]
             ),
         )

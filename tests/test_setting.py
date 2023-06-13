@@ -35,7 +35,9 @@ def test_load_json(save_data):
     settings = Settings(mock_path)
 
     assert settings.receive_port == save_data["receive"]["port"]
-    assert settings.transmit_port_settings == [TransmitPortSetting(**i) for i in save_data["transmit"]] # noqa
+    assert settings.transmit_port_settings == [
+        TransmitPortSetting(**i) for i in save_data["transmit"]
+    ]  # noqa
 
 
 def test_get_transmit_ports(save_data):
@@ -44,7 +46,9 @@ def test_get_transmit_ports(save_data):
 
     settings = Settings(mock_path)
 
-    settings.transmit_port_settings = [TransmitPortSetting(**i) for i in save_data["transmit"]] # noqa
+    settings.transmit_port_settings = [
+        TransmitPortSetting(**i) for i in save_data["transmit"]
+    ]  # noqa
 
     expected_port_numbers = [i["port"] for i in save_data["transmit"]]
     assert settings.get_transmit_ports() == expected_port_numbers
