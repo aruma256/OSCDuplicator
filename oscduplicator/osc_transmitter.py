@@ -14,7 +14,6 @@ class OSCTransmitter:
         self._q = q
         self._clients: dict[int, SimpleUDPClient] = {}
         self._clients_lock = Lock()
-        self._transmit_port_settings: list[TransmitPortSetting] = []
         self._thread = Thread(target=self._loop, daemon=True)
         self._thread.start()
         self._running = False
@@ -33,10 +32,6 @@ class OSCTransmitter:
                 self._clients[setting.port] = SimpleUDPClient(
                     OSCTransmitter.ADDRESS, setting.port
                 )
-            self._transmit_port_settings = transmit_port_settings
-
-    def get_transmit_port_settings(self) -> list[TransmitPortSetting]:
-        return self._transmit_port_settings
 
     def _loop(self) -> None:
         while True:

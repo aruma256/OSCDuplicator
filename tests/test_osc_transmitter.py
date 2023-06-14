@@ -42,21 +42,17 @@ def test_pause():
 def test_update():
     transmitter = OSCTransmitter(Queue())
     transmitter._clients[1234] = Mock()
+    assert len(transmitter._clients) == 1
 
-    transmit_port_settings = [
-        TransmitPortSetting("test0", 9000, True),
-        TransmitPortSetting("test1", 9001, True),
-    ]
+    transmitter.update(
+        [
+            TransmitPortSetting("test0", 9000, True),
+            TransmitPortSetting("test1", 9001, True),
+        ]
+    )
 
-    transmitter.update(transmit_port_settings)
-
+    # The old client should be removed.
+    # The new clients should be added.
     assert len(transmitter._clients) == 2
     assert 9000 in transmitter._clients
     assert 9001 in transmitter._clients
-
-
-def test_get_transmit_port_settings():
-    transmitter = OSCTransmitter(Queue())
-    transmit_port_settings = []
-    transmitter._transmit_port_settings = transmit_port_settings
-    assert transmitter.get_transmit_port_settings() is transmit_port_settings
