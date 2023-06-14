@@ -11,25 +11,22 @@ class Settings:
 
     Attributes
     ---------
-    file_path: Path
-        セーブファイルのパス
     receive_port: int
         OSCReceiverのポート
     transmit_port_settings: list[TransmitPortSetting]
         OSCTransmitterのための設定
     """
 
-    def __init__(self, file_path: Path) -> None:
-        self.save_file: Path = file_path
-        self.receive_port, self.transmit_port_settings = self.load_json(
-            file_path
-        )
+    FILE_PATH = Path("./oscduplicator/settings.json")
 
-    def load_json(self, file_path: Path):
+    def __init__(self) -> None:
+        self.receive_port, self.transmit_port_settings = self.load_json()
+
+    def load_json(self):
         """
         jsonファイルからセーブデータを取得する
         """
-        with file_path.open("r", encoding="UTF-8") as f:
+        with Settings.FILE_PATH.open("r", encoding="UTF-8") as f:
             json_save = json.load(f)
 
         receive_port = json_save["receive"]["port"]
@@ -39,7 +36,7 @@ class Settings:
 
         return receive_port, transmit_port_settings
 
-    def save_json(self, file_path: Path):
+    def save_json(self):
         """
         jsonファイルに設定を保存する
         """
@@ -50,7 +47,7 @@ class Settings:
             "transmit": l_dict,
         }
 
-        with file_path.open("w", encoding="UTF-8") as f:
+        with Settings.FILE_PATH.open("w", encoding="UTF-8") as f:
             json.dump(save_data, f, indent=4, ensure_ascii=False)
 
     def get_transmit_ports(self) -> list[int]:

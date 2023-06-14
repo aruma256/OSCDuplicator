@@ -29,10 +29,10 @@ def save_data():
 
 
 def test_load_json(save_data):
-    mock_path = Mock()
+    Settings.FILE_PATH = mock_path = Mock()
     mock_path.open = mock_open(read_data=json.dumps(save_data))
 
-    settings = Settings(mock_path)
+    settings = Settings()
 
     assert settings.receive_port == save_data["receive"]["port"]
     assert settings.transmit_port_settings == [
@@ -41,10 +41,10 @@ def test_load_json(save_data):
 
 
 def test_get_transmit_ports(save_data):
-    mock_path = Mock()
+    Settings.FILE_PATH = mock_path = Mock()
     mock_path.open = mock_open(read_data=json.dumps(save_data))
 
-    settings = Settings(mock_path)
+    settings = Settings()
 
     settings.transmit_port_settings = [
         TransmitPortSetting(**i) for i in save_data["transmit"]
