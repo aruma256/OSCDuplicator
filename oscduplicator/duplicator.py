@@ -32,24 +32,15 @@ class Duplicator:
         self.transmitter = OSCTransmitter(self.queue)
         self.is_duplicate = False
 
-    def start_duplicate(self, receive_port, transmit_port_settings):
+    def start_duplicate(self) -> None:
         """
-        On start button pushed
-
-        Attribute
-        ---------
-        receive_port: int
-            OSCReceiverのポート
-        transmit_port_settings: list[TransmitPortSettings]
-            OSCTransmitterのための設定
+        startボタンが押されたときに呼び出される
         """
-        self.__update_settings(receive_port, transmit_port_settings)
-
         self.receiver = OSCReceiver(self.settings.receive_port, self.queue)
 
-        transmit_ports = self.settings.get_transmit_ports()
-        for port in transmit_ports:
-            self.transmitter.add_destination_port(port)
+        self.transmitter.update_transmit_port(
+            self.settings.get_transmit_ports()
+        )
 
         self.receiver.start()
         self.transmitter.start()
@@ -66,18 +57,6 @@ class Duplicator:
         self.transmitter.pause()
 
         self.is_duplicate = False
-
-    def __update_settings(self, receive_port, transmit_port_settings):
-        """
-        Parameters
-        ---------
-        receive_port: int
-            OSCReceiverのポート
-        transmit_port_settings: list[TransmitPortSettings]
-            OSCTransmitterのための設定
-        """
-        self.settings.update_receive_port_setting(receive_port)
-        self.settings.update_transmit_port_settings(transmit_port_settings)
 
     def save_settings(self):
         self.settings.save_json(Duplicator.FILE_PATH)
