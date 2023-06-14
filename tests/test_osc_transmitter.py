@@ -39,12 +39,12 @@ def test_pause():
     assert transmitter._running is False
 
 
-def test_update():
+def test_update_transmit_port():
     transmitter = OSCTransmitter(Queue())
     transmitter._clients[1234] = Mock()
     assert len(transmitter._clients) == 1
 
-    transmitter.update(
+    transmitter.update_transmit_port(
         [
             TransmitPortSetting("test0", 9000, True),
             TransmitPortSetting("test1", 9001, True),

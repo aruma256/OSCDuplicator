@@ -24,8 +24,10 @@ class OSCTransmitter:
     def pause(self) -> None:
         self._running = False
 
-    def update(self,
-               transmit_port_settings: list[TransmitPortSetting]) -> None:
+    def update_transmit_port(
+            self,
+            transmit_port_settings: list[TransmitPortSetting],
+            ) -> None:
         with self._clients_lock:
             self._clients.clear()
             for setting in transmit_port_settings:
