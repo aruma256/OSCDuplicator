@@ -53,11 +53,6 @@ class Settings:
     def update_receive_port_setting(self, port: int):
         self.receive_port = port
 
-    def update_transmit_port_settings(
-        self, transmit_port_settings: list[TransmitPortSetting]
-    ):
-        self.transmit_port_settings = transmit_port_settings
-
     def remove_transmit_port_setting(self, port: int) -> None:
         for i in reversed(range(len(self.transmit_port_settings))):
             if self.transmit_port_settings[i].port == port:
