@@ -24,6 +24,7 @@ class Duplicator:
 
     def __init__(self) -> None:
         self.settings = Settings()
+        self.settings.load_json()
         self.queue = Queue()
         self.receiver: OSCReceiver | None = None
         self.transmitter = OSCTransmitter(self.queue)
