@@ -42,14 +42,9 @@ class Settings:
             )
 
     def save_json(self):
-        """
-        jsonファイルに設定を保存する
-        """
-        l_dict: list[dict] = [asdict(d) for d in self.transmit_port_settings]
-
-        save_data: dict = {
+        save_data = {
             "receive": {"port": self.receive_port},
-            "transmit": l_dict,
+            "transmit": list(map(asdict, self.transmit_port_settings)),
         }
 
         with Settings.FILE_PATH.open("w", encoding="UTF-8") as f:
