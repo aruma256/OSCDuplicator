@@ -37,7 +37,7 @@ class Duplicator:
         self.receiver = OSCReceiver(self.settings.receive_port, self.queue)
 
         self.transmitter.update_transmit_port(
-            self.settings.get_transmit_ports()
+            self.settings.transmit_port_settings,
         )
 
         self.receiver.start()

@@ -55,12 +55,6 @@ class Settings:
         with Settings.FILE_PATH.open("w", encoding="UTF-8") as f:
             json.dump(save_data, f, indent=4, ensure_ascii=False)
 
-    def get_transmit_ports(self) -> list[int]:
-        """
-        OSCTransmitter用に転送先のポート番号のリストを取得する
-        """
-        return [setting.port for setting in self.transmit_port_settings]
-
     def update_receive_port_setting(self, port: int):
         self.receive_port = port
 

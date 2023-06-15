@@ -2,7 +2,6 @@ import json
 from unittest.mock import Mock, mock_open
 
 from oscduplicator.settings import Settings
-from oscduplicator.transmit_port_setting import TransmitPortSetting
 
 
 def test_load_json():
@@ -41,14 +40,3 @@ def test_load_json():
     assert settings.transmit_port_settings[1].name == "app_b"
     assert settings.transmit_port_settings[1].port == 9003
     assert settings.transmit_port_settings[1].enabled is False
-
-
-def test_get_transmit_ports():
-    settings = Settings()
-
-    settings.transmit_port_settings = [
-        TransmitPortSetting(name="app_a", port=9002, enabled=True),
-        TransmitPortSetting(name="app_b", port=9003, enabled=False),
-    ]
-
-    assert settings.get_transmit_ports() == [9002, 9003]
