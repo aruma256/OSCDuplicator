@@ -1,4 +1,3 @@
-from pathlib import Path
 from queue import Queue
 
 from oscduplicator.osc_receiver import OSCReceiver
@@ -23,10 +22,9 @@ class Duplicator:
         dulicatorが実行されているかどうか
     """
 
-    FILE_PATH = Path("./oscduplicator/settings.json")
-
     def __init__(self) -> None:
-        self.settings = Settings(Duplicator.FILE_PATH)
+        self.settings = Settings()
+        self.settings.load_json()
         self.queue = Queue()
         self.receiver: OSCReceiver | None = None
         self.transmitter = OSCTransmitter(self.queue)
@@ -39,7 +37,7 @@ class Duplicator:
         self.receiver = OSCReceiver(self.settings.receive_port, self.queue)
 
         self.transmitter.update_transmit_port(
-            self.settings.get_transmit_ports()
+            self.settings.transmit_port_settings,
         )
 
         self.receiver.start()
@@ -59,4 +57,4 @@ class Duplicator:
         self.is_duplicate = False
 
     def save_settings(self):
-        self.settings.save_json(Duplicator.FILE_PATH)
+        self.settings.save_json()
