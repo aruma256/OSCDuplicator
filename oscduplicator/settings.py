@@ -63,18 +63,17 @@ class Settings:
     ):
         self.transmit_port_settings = transmit_port_settings
 
-    def remove_transmit_port_setting(self, port: int):
-        for i in range(len(self.transmit_port_settings)):
-            if self.transmit_port_settings[i][0] == port:
+    def remove_transmit_port_setting(self, port: int) -> None:
+        for i in reversed(range(len(self.transmit_port_settings))):
+            if self.transmit_port_settings[i].port == port:
                 del self.transmit_port_settings[i]
-                return
 
-    def enable_transmit_port(self, port: int):
-        for i in range(len(self.transmit_port_settings)):
-            if self.transmit_port_settings[i][0] == port:
-                self.transmit_port_settings[i][2] = True
+    def enable_transmit_port(self, port: int) -> None:
+        for setting in self.transmit_port_settings:
+            if setting.port == port:
+                setting.enabled = True
 
-    def disable_transmit_port(self, port: int):
-        for i in range(len(self.transmit_port_settings)):
-            if self.transmit_port_settings[i][0] == port:
-                self.transmit_port_settings[i][2] = False
+    def disable_transmit_port(self, port: int) -> None:
+        for setting in self.transmit_port_settings:
+            if setting.port == port:
+                setting.enabled = False
