@@ -34,7 +34,7 @@ def test_start():
         sleep(0.1)
         assert handler_mock.call_args[0] == ("/test/0", "message")
 
-        udp_client.send_message("/test/1", [1, 2, 3])
+        udp_client.send_message("/test/1", (1, 2, 3))
         sleep(0.1)
         assert handler_mock.call_args[0] == ("/test/1", 1, 2, 3)
 
@@ -59,13 +59,18 @@ def test_pause():
 def test_message_handler():
     queue = Queue()
     receiver = OSCReceiver(5000, queue)
-    address = "/test"
-    args = ["message"]
-    receiver.message_handler(address, args)
 
-    assert queue.qsize() == 1
+    receiver.message_handler("/test/0", "message")
+    osc_message = queue.get_nowait()
+    assert osc_message.address == "/test/0"
+    assert osc_message.message == ("message",)
 
-    message = receiver._message_queue.get_nowait()
+    receiver.message_handler("/test/1", 1, 2, 3)
+    osc_message = queue.get_nowait()
+    assert osc_message.address == "/test/1"
+    assert osc_message.message == (1, 2, 3)
 
-    assert message.address == address
-    assert message.message == args
+    receiver.message_handler("/test/2")
+    osc_message = queue.get_nowait()
+    assert osc_message.address == "/test/2"
+    assert osc_message.message == tuple()

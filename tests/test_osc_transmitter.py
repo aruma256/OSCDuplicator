@@ -13,14 +13,14 @@ def test_init():
     transmitter.start()
     transmitter._clients[9000] = mock_client = Mock()
 
-    queue.put(OSCMessage("/test", 1))
+    queue.put(OSCMessage("/test", (1,)))
     time.sleep(0.1)
-    mock_client.send_message.assert_called_once_with("/test", 1)
+    mock_client.send_message.assert_called_once_with("/test", (1,))
     mock_client.reset_mock()
 
     transmitter.pause()
 
-    queue.put(OSCMessage("/test", 2))
+    queue.put(OSCMessage("/test", (2,)))
     time.sleep(0.1)
     mock_client.send_message.assert_not_called()
     mock_client.reset_mock()
