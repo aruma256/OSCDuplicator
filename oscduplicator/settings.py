@@ -20,8 +20,12 @@ class Settings:
     FILE_PATH = Path("./oscduplicator/settings.json")
 
     def __init__(self) -> None:
-        self.receive_port: int | None = None
+        self._receive_port: int | None = None
         self.transmit_port_settings: list[TransmitPortSetting] = []
+
+    @property
+    def receive_port(self) -> int | None:
+        return self._receive_port
 
     def load_json(self) -> None:
         """
@@ -30,8 +34,8 @@ class Settings:
         with Settings.FILE_PATH.open("r", encoding="UTF-8") as f:
             data = json.load(f)
 
-        self.receive_port = data["receive"]["port"]
         self.transmit_port_settings.clear()
+        self.update_receive_port_setting(data["receive"]["port"])
         for element in data["transmit"]:
             self.add_transmit_port_setting(
                 name=element["name"],
@@ -48,8 +52,13 @@ class Settings:
         with Settings.FILE_PATH.open("w", encoding="UTF-8") as f:
             json.dump(save_data, f, indent=4, ensure_ascii=False)
 
-    def update_receive_port_setting(self, port: int):
-        self.receive_port = port
+    def update_receive_port_setting(self, port: int) -> bool:
+        if self.receive_port == port:
+            return False
+        if any(s.port == port for s in self.transmit_port_settings):
+            return False
+        self._receive_port = port
+        return True
 
     def add_transmit_port_setting(self,
                                   name: str, port: int, enabled: bool) -> bool:

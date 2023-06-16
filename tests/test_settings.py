@@ -50,7 +50,7 @@ def test_save_json():
     mock_path.open.return_value.__enter__.return_value = string_buffer
 
     settings = Settings()
-    settings.receive_port = 9001
+    settings.update_receive_port_setting(9001)
     settings.transmit_port_settings = [
         TransmitPortSetting("app_a", 9002, True),
         TransmitPortSetting("app_b", 9003, False),
@@ -83,14 +83,28 @@ def test_save_json():
 
 def test_update_receive_port_setting():
     settings = Settings()
-    settings.receive_port = 9001
-    settings.update_receive_port_setting(9002)
-    assert settings.receive_port == 9002
+    settings.update_receive_port_setting(9001)
+
+    settings.transmit_port_settings = [
+        TransmitPortSetting("app_a", 9002, True),
+        TransmitPortSetting("app_b", 9003, False),
+    ]
+
+    assert settings.update_receive_port_setting(9004) is True
+    assert settings.receive_port == 9004
+
+    # 同一ポート番号を指定した場合は更新しない
+    assert settings.update_receive_port_setting(9004) is False
+    assert settings.receive_port == 9004
+
+    # 送信先に含まれるポート番号を指定した場合は更新しない
+    assert settings.update_receive_port_setting(9003) is False
+    assert settings.receive_port == 9004
 
 
 def test_add_transmit_port_setting():
     settings = Settings()
-    settings.receive_port = 9001
+    settings.update_receive_port_setting(9001)
     settings.transmit_port_settings = [
         TransmitPortSetting("app_a", 9002, True),
         TransmitPortSetting("app_b", 9003, False),
