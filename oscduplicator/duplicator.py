@@ -50,7 +50,7 @@ class Duplicator:
         On stop button pushed
         """
         if self.receiver:
-            self.receiver.stop()
+            self.receiver.pause()
 
         self.transmitter.pause()
 

@@ -17,7 +17,7 @@ def test_stop_duplicate():
 
     duplicator.stop_duplicate()
 
-    receiver_mock.stop.assert_called_once()
+    receiver_mock.pause.assert_called_once()
     transmitter_mock.pause.assert_called_once()
 
 

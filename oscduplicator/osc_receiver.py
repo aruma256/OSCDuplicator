@@ -44,7 +44,7 @@ class OSCReceiver:
         thread = Thread(target=self._server.serve_forever)
         thread.start()
 
-    def stop(self):
+    def pause(self):
         if self._server:
             self._server.shutdown()
 

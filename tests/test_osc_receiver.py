@@ -28,14 +28,14 @@ def test_start():
         mock_thread.return_value.start.assert_called_once()
 
 
-def test_stop():
+def test_pause():
     receiver = OSCReceiver(5000, Queue())
 
     receiver._server = None
-    receiver.stop()  # start前に呼ばれてもエラーにならない
+    receiver.pause()  # start前に呼ばれてもエラーにならない
 
     receiver._server = mock_server = Mock()
-    receiver.stop()
+    receiver.pause()
     mock_server.shutdown.assert_called_once()
 
 
