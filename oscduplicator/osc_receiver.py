@@ -37,7 +37,7 @@ class OSCReceiver:
         dispatcher.map("*", self.message_handler)
 
         self._server = BlockingOSCUDPServer(
-            ("0, 0, 0, 0", self.receive_port),
+            ("127.0.0.1", self.receive_port),
             dispatcher,
         )
 
