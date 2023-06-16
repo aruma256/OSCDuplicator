@@ -1,5 +1,9 @@
-from unittest.mock import Mock, patch
 from queue import Queue
+from socket import socket
+from time import sleep
+from unittest.mock import Mock
+
+from pythonosc.udp_client import SimpleUDPClient
 
 from oscduplicator.osc_receiver import OSCReceiver
 
@@ -14,18 +18,31 @@ def test_init():
 
 
 def test_start():
-    with patch(
-        "oscduplicator.osc_receiver.BlockingOSCUDPServer", autospec=True
-    ) as mock_server, patch(
-        "oscduplicator.osc_receiver.Thread", autospec=True
-    ) as mock_thread:
-        receiver = OSCReceiver(5000, Queue())
+    with socket() as sock:
+        sock.bind(("", 0))
+        free_port = sock.getsockname()[1]
+
+    receiver = OSCReceiver(free_port, Mock())
+    receiver.message_handler = handler_mock = Mock()
+
+    try:
         receiver.start()
 
-        mock_thread.assert_called_once_with(
-            target=mock_server.return_value.serve_forever
-        )
-        mock_thread.return_value.start.assert_called_once()
+        udp_client = SimpleUDPClient("127.0.0.1", free_port)
+
+        udp_client.send_message("/test/0", "message")
+        sleep(0.1)
+        assert handler_mock.call_args[0] == ("/test/0", "message")
+
+        udp_client.send_message("/test/1", [1, 2, 3])
+        sleep(0.1)
+        assert handler_mock.call_args[0] == ("/test/1", 1, 2, 3)
+
+        udp_client.send_message("/test/2", None)
+        sleep(0.1)
+        assert handler_mock.call_args[0] == ("/test/2",)
+    finally:
+        receiver.pause()
 
 
 def test_pause():
