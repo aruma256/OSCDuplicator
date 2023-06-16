@@ -7,34 +7,34 @@ App : Duplicator duplicator
 App : main()
 
 class Duplicator
-Duplicator : Setting settings
+Duplicator : Settings settings
 Duplicator : Queue queue
-Duplicator : OscReceiver receiver
-Duplicator : OscTransmitter transmitter
+Duplicator : OSCReceiver receiver
+Duplicator : OSCTransmitter transmitter
 Duplicator : bool is_duplicate
 Duplicator : start_duplicate()
 Duplicator : stop_duplicate()
 Duplicator : save_settings()
 
-class OscReceiver
-OscReceiver : int receive_port
-OscReceiver : BlockingOSCUDPServer _server
-OscReceiver : Queue _message_queue
-OscReceiver : start()
-OscReceiver : stop()
-OscReceiver : message_handler()
+class OSCReceiver
+OSCReceiver : int receive_port
+OSCReceiver : BlockingOSCUDPServer _server
+OSCReceiver : Queue _message_queue
+OSCReceiver : start()
+OSCReceiver : stop()
+OSCReceiver : message_handler()
 
-class OscTransmitter
-OscTransmitter : Queue q
-OscTransmitter : dict _clients
-OscTransmitter : Lock _clients_lock
-OscTransmitter : Thread _thread
-OscTransmitter : bool _running
-OscTransmitter : start()
-OscTransmitter : pause()
-OscTransmitter : update_transmit_port()
-OscTransmitter : _loop()
-OscTransmitter : _transmit()
+class OSCTransmitter
+OSCTransmitter : Queue q
+OSCTransmitter : dict _clients
+OSCTransmitter : Lock _clients_lock
+OSCTransmitter : Thread _thread
+OSCTransmitter : bool _running
+OSCTransmitter : start()
+OSCTransmitter : pause()
+OSCTransmitter : update_transmit_port()
+OSCTransmitter : _loop()
+OSCTransmitter : _transmit()
 
 
 class Settings
@@ -55,7 +55,7 @@ TransmitPortSetting : bool enabled
 
 App <-- Duplicator
 Duplicator <-- Settings
-Duplicator <-- OscReceiver
-Duplicator <-- OscTransmitter
+Duplicator <-- OSCReceiver
+Duplicator <-- OSCTransmitter
 Settings *-- TransmitPortSetting
 ```
