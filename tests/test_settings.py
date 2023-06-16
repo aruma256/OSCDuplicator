@@ -83,9 +83,29 @@ def test_save_json():
 
 def test_update_receive_port_setting():
     settings = Settings()
-    settings.receive_port = 9000
-    settings.update_receive_port_setting(9001)
-    assert settings.receive_port == 9001
+    settings.receive_port = 9001
+    settings.update_receive_port_setting(9002)
+    assert settings.receive_port == 9002
+
+
+def test_add_transmit_port_setting():
+    settings = Settings()
+    settings.receive_port = 9001
+    settings.transmit_port_settings = [
+        TransmitPortSetting("app_a", 9002, True),
+        TransmitPortSetting("app_b", 9003, False),
+    ]
+
+    assert settings.add_transmit_port_setting("app_c", 9004, True) is True
+    assert len(settings.transmit_port_settings) == 3
+
+    # 重複するポート番号を指定した場合は追加しない
+    assert settings.add_transmit_port_setting("app_d", 9002, True) is False
+    assert len(settings.transmit_port_settings) == 3
+
+    # 受信と同一ポート番号を指定した場合は追加しない
+    assert settings.add_transmit_port_setting("app_e", 9001, True) is False
+    assert len(settings.transmit_port_settings) == 3
 
 
 def test_remove_transmit_port_setting():

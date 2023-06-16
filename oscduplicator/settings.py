@@ -1,6 +1,6 @@
+from dataclasses import asdict
 import json
 from pathlib import Path
-from dataclasses import asdict
 
 from oscduplicator.transmit_port_setting import TransmitPortSetting
 
@@ -33,12 +33,10 @@ class Settings:
         self.receive_port = data["receive"]["port"]
         self.transmit_port_settings.clear()
         for element in data["transmit"]:
-            self.transmit_port_settings.append(
-                TransmitPortSetting(
-                    name=element["name"],
-                    port=element["port"],
-                    enabled=element["enabled"],
-                )
+            self.add_transmit_port_setting(
+                name=element["name"],
+                port=element["port"],
+                enabled=element["enabled"],
             )
 
     def save_json(self):
@@ -52,6 +50,17 @@ class Settings:
 
     def update_receive_port_setting(self, port: int):
         self.receive_port = port
+
+    def add_transmit_port_setting(self,
+                                  name: str, port: int, enabled: bool) -> bool:
+        if self.receive_port == port:
+            return False
+        if any(s.port == port for s in self.transmit_port_settings):
+            return False
+        self.transmit_port_settings.append(
+            TransmitPortSetting(name, port, enabled)
+        )
+        return True
 
     def remove_transmit_port_setting(self, port: int) -> None:
         for i in reversed(range(len(self.transmit_port_settings))):
