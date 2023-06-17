@@ -10,7 +10,7 @@ from pythonosc.osc_server import BlockingOSCUDPServer
 @dataclass(frozen=True)
 class OSCMessage:
     address: str
-    message: list[Any]
+    message: tuple[Any]
 
 
 class OSCReceiver:
@@ -34,21 +34,21 @@ class OSCReceiver:
 
     def start(self):
         dispatcher = Dispatcher()
-        dispatcher.map("*", self.message_handler)
+        dispatcher.set_default_handler(self.message_handler)
 
         self._server = BlockingOSCUDPServer(
-            ("0, 0, 0, 0", self.receive_port),
+            ("127.0.0.1", self.receive_port),
             dispatcher,
         )
 
         thread = Thread(target=self._server.serve_forever)
         thread.start()
 
-    def stop(self):
+    def pause(self):
         if self._server:
             self._server.shutdown()
 
-    def message_handler(self, address: str, args: list[Any]):
+    def message_handler(self, address: str, *args: Any):
         """
         受信したOSC messageをQueueに追加する
         """
