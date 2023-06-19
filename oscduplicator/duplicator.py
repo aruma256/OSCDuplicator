@@ -34,10 +34,6 @@ class Duplicator:
         """
         startボタンが押されたときに呼び出される
         """
-        self.transmitter.update_transmit_port(
-            self.settings.transmit_port_settings,
-        )
-
         self.receiver.start()
         self.transmitter.start()
 
