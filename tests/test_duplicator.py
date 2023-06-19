@@ -3,6 +3,21 @@ from unittest.mock import Mock
 from oscduplicator.duplicator import Duplicator
 
 
+def test_load_settings():
+    duplicator = Duplicator()
+    duplicator.settings = settings_mock = Mock()
+    duplicator.receiver = receiver_mock = Mock()
+    duplicator.transmitter = transmitter_mock = Mock()
+
+    duplicator.load_settings()
+
+    # 設定がロードされること
+    settings_mock.load_json.assert_called_once()
+    # 設定が反映されること
+    receiver_mock.update_receive_port.assert_called_once()
+    transmitter_mock.update_transmit_port.assert_called_once()
+
+
 def test_start_duplicate():
     duplicator = Duplicator()
     duplicator.receiver = receiver_mock = Mock()
