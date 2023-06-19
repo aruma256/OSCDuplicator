@@ -8,21 +8,13 @@ from pythonosc.udp_client import SimpleUDPClient
 from oscduplicator.osc_receiver import OSCReceiver
 
 
-def test_init():
-    queue = Queue()
-    receiver = OSCReceiver(5000, queue)
-
-    assert receiver.receive_port == 5000
-    assert receiver._server is None
-    assert receiver._message_queue is queue
-
-
 def test_start():
     with socket() as sock:
         sock.bind(("", 0))
         free_port = sock.getsockname()[1]
 
-    receiver = OSCReceiver(free_port, Mock())
+    receiver = OSCReceiver(Mock())
+    receiver._receive_port = free_port
     receiver.message_handler = handler_mock = Mock()
 
     try:
@@ -46,7 +38,7 @@ def test_start():
 
 
 def test_pause():
-    receiver = OSCReceiver(5000, Queue())
+    receiver = OSCReceiver(Queue())
 
     receiver._server = None
     receiver.pause()  # start前に呼ばれてもエラーにならない
@@ -56,9 +48,26 @@ def test_pause():
     mock_server.shutdown.assert_called_once()
 
 
+def test_update_receive_port():
+    receiver = OSCReceiver(Queue())
+    receiver.pause = pause_mock = Mock()
+    receiver.start = start_mock = Mock()
+
+    # start前に呼ばれてもエラーにならない
+    receiver._server = None
+    receiver.update_receive_port(9002)
+    pause_mock.assert_not_called()
+    start_mock.assert_not_called()  # startしない
+
+    receiver._server = Mock()
+    receiver.update_receive_port(9003)
+    pause_mock.assert_called_once()
+    start_mock.assert_called_once()  # 自動的にstartする
+
+
 def test_message_handler():
     queue = Queue()
-    receiver = OSCReceiver(5000, queue)
+    receiver = OSCReceiver(queue)
 
     receiver.message_handler("/test/0", "message")
     osc_message = queue.get_nowait()
