@@ -120,10 +120,8 @@ class TransmitterContainer(ft.UserControl):
         row = self.create_row(port, name, False)
         self.transmitter_data_table.rows.append(row)
 
-        self.duplicator.settings.transmit_port_settings.append(
-            [port, name, False]
-        )
-        # self.duplicator.transmitter.add_destination_port(port)
+        self.duplicator.add_transmit_port(name, port)
+
         e.page.dialog.open = False
         e.page.update()
         self.update()
