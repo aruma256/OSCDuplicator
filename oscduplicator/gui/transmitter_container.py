@@ -129,8 +129,7 @@ class TransmitterContainer(ft.UserControl):
     def on_delete_clicked(self, port_text_field, _):
         port = port_text_field.value
 
-        self.duplicator.transmitter.remove_destination_port(port)
-        self.duplicator.settings.remove_transmit_port_setting(port)
+        self.duplicator.remove_transmit_port(port)
 
         self.transmitter_data_table.rows = self.data_table_rows()
 
