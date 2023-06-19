@@ -16,6 +16,7 @@ class App:
         page.window_width, page.window_height = 600, 800
 
         self.duplicator = Duplicator()
+        self.duplicator.load_settings()
 
         self.header = Header(self.duplicator)
         self.receiver_container = ReceiverContainer(self.duplicator)  # ポートは仮

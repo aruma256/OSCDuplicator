@@ -1,13 +1,32 @@
 from unittest.mock import Mock
 
-import pytest
-
 from oscduplicator.duplicator import Duplicator
 
 
-@pytest.mark.skip(reason="テスト未実装")  # TODO テストしやすい実装に書き換えてからテストを追加する
+def test_load_settings():
+    duplicator = Duplicator()
+    duplicator.settings = settings_mock = Mock()
+    duplicator.receiver = receiver_mock = Mock()
+    duplicator.transmitter = transmitter_mock = Mock()
+
+    duplicator.load_settings()
+
+    # 設定がロードされること
+    settings_mock.load_json.assert_called_once()
+    # 設定が反映されること
+    receiver_mock.update_receive_port.assert_called_once()
+    transmitter_mock.update_transmit_port.assert_called_once()
+
+
 def test_start_duplicate():
-    pass
+    duplicator = Duplicator()
+    duplicator.receiver = receiver_mock = Mock()
+    duplicator.transmitter = transmitter_mock = Mock()
+
+    duplicator.start_duplicate()
+
+    receiver_mock.start.assert_called_once()
+    transmitter_mock.start.assert_called_once()
 
 
 def test_stop_duplicate():
@@ -21,9 +40,13 @@ def test_stop_duplicate():
     transmitter_mock.pause.assert_called_once()
 
 
-@pytest.mark.skip(reason="テスト未実装")  # TODO テストしやすい実装に書き換えてからテストを追加する
 def test_save_settings():
-    pass
+    duplicator = Duplicator()
+    duplicator.settings = settings_mock = Mock()
+
+    duplicator.save_settings()
+
+    settings_mock.save_json.assert_called_once()
 
 
 def test_add_transmit_port():

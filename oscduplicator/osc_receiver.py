@@ -27,17 +27,19 @@ class OSCReceiver:
         受信したOSC messageを格納するキュー
     """
 
-    def __init__(self, receive_port: int, message_queue: Queue) -> None:
-        self.receive_port: int = receive_port
+    def __init__(self, message_queue: Queue) -> None:
+        self._receive_port: int | None = None
         self._server: BlockingOSCUDPServer | None = None
         self._message_queue = message_queue
 
-    def start(self):
+    def start(self) -> None:
+        if self._server:
+            return
         dispatcher = Dispatcher()
         dispatcher.set_default_handler(self.message_handler)
 
         self._server = BlockingOSCUDPServer(
-            ("127.0.0.1", self.receive_port),
+            ("127.0.0.1", self._receive_port),
             dispatcher,
         )
 
@@ -47,6 +49,12 @@ class OSCReceiver:
     def pause(self):
         if self._server:
             self._server.shutdown()
+
+    def update_receive_port(self, receive_port: int):
+        self._receive_port = receive_port
+        if self._server:
+            self.pause()
+            self.start()
 
     def message_handler(self, address: str, *args: Any):
         """

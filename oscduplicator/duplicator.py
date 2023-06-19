@@ -24,22 +24,22 @@ class Duplicator:
 
     def __init__(self) -> None:
         self.settings = Settings()
-        self.settings.load_json()
         self.queue = Queue()
-        self.receiver: OSCReceiver | None = None
+        self.receiver = OSCReceiver(self.queue)
         self.transmitter = OSCTransmitter(self.queue)
         self.is_duplicate = False
+
+    def load_settings(self) -> None:
+        self.settings.load_json()
+        self.receiver.update_receive_port(self.settings.receive_port_setting)
+        self.transmitter.update_transmit_port(
+            self.settings.transmit_port_settings
+        )
 
     def start_duplicate(self) -> None:
         """
         startボタンが押されたときに呼び出される
         """
-        self.receiver = OSCReceiver(self.settings.receive_port, self.queue)
-
-        self.transmitter.update_transmit_port(
-            self.settings.transmit_port_settings,
-        )
-
         self.receiver.start()
         self.transmitter.start()
 
@@ -49,9 +49,7 @@ class Duplicator:
         """
         On stop button pushed
         """
-        if self.receiver:
-            self.receiver.pause()
-
+        self.receiver.pause()
         self.transmitter.pause()
 
         self.is_duplicate = False
