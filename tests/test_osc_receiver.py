@@ -33,6 +33,11 @@ def test_start():
         udp_client.send_message("/test/2", None)
         sleep(0.1)
         assert handler_mock.call_args[0] == ("/test/2",)
+
+        # start済みの場合は何もしない
+        server = receiver._server
+        receiver.start()
+        assert receiver._server is server  # サーバーが変わらないこと
     finally:
         receiver.pause()
 

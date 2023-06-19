@@ -32,7 +32,9 @@ class OSCReceiver:
         self._server: BlockingOSCUDPServer | None = None
         self._message_queue = message_queue
 
-    def start(self):
+    def start(self) -> None:
+        if self._server:
+            return
         dispatcher = Dispatcher()
         dispatcher.set_default_handler(self.message_handler)
 
