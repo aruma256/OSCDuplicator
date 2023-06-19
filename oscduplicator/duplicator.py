@@ -58,3 +58,16 @@ class Duplicator:
 
     def save_settings(self):
         self.settings.save_json()
+
+    def add_transmit_port(self, name: str, port: int):
+        ret = self.settings.add_transmit_port_setting(name, port, False)
+        if ret:
+            self.transmitter.update_transmit_port(
+                self.settings.transmit_port_settings
+            )
+
+    def remove_transmit_port(self, port: int):
+        self.settings.remove_transmit_port_setting(port)
+        self.transmitter.update_transmit_port(
+            self.settings.transmit_port_settings
+        )
