@@ -58,3 +58,9 @@ class Duplicator:
 
     def save_settings(self):
         self.settings.save_json()
+
+    def add_transmit_port(name: str, port: int):
+        """
+        transmitterにポートを追加する
+        """
+        
