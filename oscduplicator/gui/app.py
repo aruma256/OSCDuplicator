@@ -5,7 +5,7 @@ from oscduplicator.duplicator import Duplicator
 from oscduplicator.gui.header import Header
 from oscduplicator.gui.receiver_container import ReceiverContainer
 from oscduplicator.gui.transmitter_container import TransmitterContainer
-from oscduplicator.gui.option_setting_container import OptionSettingContainer
+
 
 APP_TITLE = "OSCDuplicator"
 
@@ -20,12 +20,10 @@ class App:
         self.duplicator.load_settings()
 
         self.header = Header(self.duplicator)
-        self.option_setting_container = OptionSettingContainer(self.duplicator)
         self.receiver_container = ReceiverContainer(self.duplicator)  # ポートは仮
         self.transmitter_container = TransmitterContainer(self.duplicator)
 
         page.add(self.header)
-        page.add(self.option_setting_container)
         page.add(self.receiver_container)
         page.add(self.transmitter_container)
 

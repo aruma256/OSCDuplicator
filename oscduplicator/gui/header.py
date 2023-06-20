@@ -28,11 +28,25 @@ class Header(ft.UserControl):
             width=600,
             height=80,
             content=ft.Row(
-                [self.text, self.button],
+                [self.popup_menue(), self.text, self.button],
                 alignment=ft.MainAxisAlignment.SPACE_AROUND,
             ),
             bgcolor=ft.colors.INDIGO_50,
             margin=0,
+        )
+
+    def popup_menue(self):
+        return ft.PopupMenuButton(
+            items=[
+                ft.PopupMenuItem(
+                    text="オプション設定",
+                    # on_click
+                ),
+                ft.PopupMenuItem(
+                    text="ライセンス"
+                    # on_click
+                ),
+            ]
         )
 
     def update_status_text(self):
