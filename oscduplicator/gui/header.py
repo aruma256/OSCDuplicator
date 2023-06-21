@@ -39,12 +39,10 @@ class Header(ft.UserControl):
         return ft.PopupMenuButton(
             items=[
                 ft.PopupMenuItem(
-                    text="オプション設定",
-                    on_click=self.show_option_setting_dialog
+                    text="オプション設定", on_click=self.show_option_setting_dialog
                 ),
                 ft.PopupMenuItem(
-                    text="ライセンス",
-                    on_click=self.show_license_list_dialog
+                    text="ライセンス", on_click=self.show_license_list_dialog
                 ),
             ]
         )
@@ -52,10 +50,7 @@ class Header(ft.UserControl):
     def show_option_setting_dialog(self, e):
         e.page.dialog = ft.AlertDialog(
             content=ft.Column(
-                controls=[
-                    ft.Text("オプション設定"),
-                    self.auto_transmit_checkbox()
-                ],
+                controls=[ft.Text("オプション設定"), self.auto_transmit_checkbox()],
                 height=100,  # ここ自動調整できない...?
             )
         )
@@ -66,16 +61,13 @@ class Header(ft.UserControl):
         return ft.Checkbox(
             label="App起動時に転送を開始",
             # value=,
-            # on_chenge=, 
+            # on_chenge=,
         )
-    
+
     def show_license_list_dialog(self, e):
         e.page.dialog = ft.AlertDialog(
             content=ft.Column(
-                controls=[
-                    ft.Text("ライセンス"),
-                    *self._license_list()
-                ],
+                controls=[ft.Text("ライセンス"), *self._license_list()],
                 height=100,  # ここ自動調整できない...?
             ),
         )
@@ -84,16 +76,16 @@ class Header(ft.UserControl):
 
     def _license_list(self):
         lib_list = [
-            ["このアプリ:", "Apache License 2.0", "https://github.com/aruma256/OSCDuplicator/blob/main/LICENSE"],
+            [
+                "このアプリ:",
+                "Apache License 2.0",
+                "https://github.com/aruma256/OSCDuplicator/blob/main/LICENSE",
+            ],
         ]
 
         return [
-            ft.Row(
-                [
-                    ft.Text(lib[0]),
-                    ft.TextButton(text=lib[1])
-                ]
-            ) for lib in lib_list
+            ft.Row([ft.Text(lib[0]), ft.TextButton(text=lib[1])])
+            for lib in lib_list
         ]
 
     def update_status_text(self):
