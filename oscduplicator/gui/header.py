@@ -28,19 +28,17 @@ class Header(ft.UserControl):
             width=600,
             height=80,
             content=ft.Row(
-                [self.popup_menue(), self.text, self.button],
+                [self.text, self.button, self.popup_menu()],
                 alignment=ft.MainAxisAlignment.SPACE_AROUND,
             ),
             bgcolor=ft.colors.INDIGO_50,
             margin=0,
         )
 
-    def popup_menue(self):
+    def popup_menu(self):
         return ft.PopupMenuButton(
             items=[
-                ft.PopupMenuItem(
-                    text="オプション設定", on_click=self.show_option_setting_dialog
-                ),
+                ft.PopupMenuItem(content=self.auto_transmit_checkbox()),
                 ft.PopupMenuItem(
                     text="ライセンス", on_click=self.show_license_list_dialog
                 ),
