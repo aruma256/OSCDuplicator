@@ -6,6 +6,7 @@ from oscduplicator.gui.header import Header
 from oscduplicator.gui.receiver_container import ReceiverContainer
 from oscduplicator.gui.transmitter_container import TransmitterContainer
 
+
 APP_TITLE = "OSCDuplicator"
 
 
