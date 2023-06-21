@@ -40,14 +40,61 @@ class Header(ft.UserControl):
             items=[
                 ft.PopupMenuItem(
                     text="オプション設定",
-                    # on_click
+                    on_click=self.show_option_setting_dialog
                 ),
                 ft.PopupMenuItem(
-                    text="ライセンス"
-                    # on_click
+                    text="ライセンス",
+                    on_click=self.show_license_list_dialog
                 ),
             ]
         )
+
+    def show_option_setting_dialog(self, e):
+        e.page.dialog = ft.AlertDialog(
+            content=ft.Column(
+                controls=[
+                    ft.Text("オプション設定"),
+                    self.auto_transmit_checkbox()
+                ],
+                height=100,  # ここ自動調整できない...?
+            )
+        )
+        e.page.dialog.open = True
+        e.page.update()
+
+    def auto_transmit_checkbox(self):
+        return ft.Checkbox(
+            label="App起動時に転送を開始",
+            # value=,
+            # on_chenge=, 
+        )
+    
+    def show_license_list_dialog(self, e):
+        e.page.dialog = ft.AlertDialog(
+            content=ft.Column(
+                controls=[
+                    ft.Text("ライセンス"),
+                    *self._license_list()
+                ],
+                height=100,  # ここ自動調整できない...?
+            ),
+        )
+        e.page.dialog.open = True
+        e.page.update()
+
+    def _license_list(self):
+        lib_list = [
+            ["このアプリ:", "Apache License 2.0", "https://github.com/aruma256/OSCDuplicator/blob/main/LICENSE"],
+        ]
+
+        return [
+            ft.Row(
+                [
+                    ft.Text(lib[0]),
+                    ft.TextButton(text=lib[1])
+                ]
+            ) for lib in lib_list
+        ]
 
     def update_status_text(self):
         """
