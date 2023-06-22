@@ -1,6 +1,7 @@
 import flet as ft
 
 from oscduplicator.duplicator import Duplicator
+from oscduplicator.license_text import LICENSE_TEXT
 
 
 class Header(ft.UserControl):
@@ -68,12 +69,18 @@ class Header(ft.UserControl):
         e.page.update()
 
     def _licence_datatable(self):
-        return ft.DataTable(
-            columns=[
-                ft.DataColumn(ft.Text("ライセンス")),
-                ft.DataColumn(ft.Text("")),
+        return ft.Column(
+            [
+                ft.DataTable(
+                    columns=[
+                        ft.DataColumn(ft.Text("ライセンス")),
+                        ft.DataColumn(ft.Text("")),
+                    ],
+                    rows=self._license_list(),
+                ),
+                ft.Text(LICENSE_TEXT),
             ],
-            rows=self._license_list(),
+            scroll="always",
         )
 
     def _license_list(self):
