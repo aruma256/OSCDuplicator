@@ -63,26 +63,45 @@ class Header(ft.UserControl):
         )
 
     def show_license_list_dialog(self, e):
-        e.page.dialog = ft.AlertDialog(
-            content=ft.Column(
-                controls=[ft.Text("ライセンス"), *self._license_list()],
-                height=100,  # ここ自動調整できない...?
-            ),
-        )
+        e.page.dialog = ft.AlertDialog(content=self._licence_datatable())
         e.page.dialog.open = True
         e.page.update()
+
+    def _licence_datatable(self):
+        return ft.DataTable(
+            columns=[
+                ft.DataColumn(ft.Text("ライセンス")),
+                ft.DataColumn(ft.Text("")),
+            ],
+            rows=self._license_list(),
+        )
 
     def _license_list(self):
         lib_list = [
             [
-                "このアプリ:",
+                "このアプリ",
                 "Apache License 2.0",
                 "https://github.com/aruma256/OSCDuplicator/blob/main/LICENSE",
+            ],
+            [
+                "flet",
+                "Apache License 2.0",
+                "https://github.com/flet-dev/flet/blob/main/LICENSE",
+            ],
+            [
+                "python-osc",
+                "Unlicence",
+                "https://github.com/attwad/python-osc/blob/master/LICENSE.txt",
             ],
         ]
 
         return [
-            ft.Row([ft.Text(lib[0]), ft.TextButton(text=lib[1])])
+            ft.DataRow(
+                [
+                    ft.DataCell(ft.Text(lib[0])),
+                    ft.DataCell(ft.TextButton(text=lib[1])),
+                ]
+            )
             for lib in lib_list
         ]
 
