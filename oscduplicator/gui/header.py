@@ -107,7 +107,7 @@ class Header(ft.UserControl):
 
     def update_status_text(self):
         """
-        dupkicatorの実行状態に応じて、
+        duplicatorの実行状態に応じて、
         テキストを変更
         """
         if not False:
@@ -117,7 +117,7 @@ class Header(ft.UserControl):
 
     def update_run_button(self):
         """
-        dupkicatorの実行状態に応じて、
+        duplicatorの実行状態に応じて、
         ボタンのテキスト・レイアウトを変更
         """
         if not False:
