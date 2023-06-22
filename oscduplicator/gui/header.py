@@ -90,7 +90,7 @@ class Header(ft.UserControl):
             ],
             [
                 "python-osc",
-                "Unlicence",
+                "The Unlicence",
                 "https://github.com/attwad/python-osc/blob/master/LICENSE.txt",
             ],
         ]
@@ -99,7 +99,7 @@ class Header(ft.UserControl):
             ft.DataRow(
                 [
                     ft.DataCell(ft.Text(lib[0])),
-                    ft.DataCell(ft.TextButton(text=lib[1])),
+                    ft.DataCell(ft.TextButton(text=lib[1], url=lib[2])),
                 ]
             )
             for lib in lib_list
