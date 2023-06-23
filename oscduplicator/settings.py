@@ -22,9 +22,9 @@ class Settings:
     FILE_PATH = Path("./settings.json")
 
     def __init__(self) -> None:
-        self._receive_port: int | None = None
+        self._receive_port: int = 9001
         self.transmit_port_settings: list[TransmitPortSetting] = []
-        self.auto_start: bool | None = None
+        self.auto_start: bool = False
 
     @property
     def receive_port(self) -> int | None:
@@ -33,9 +33,6 @@ class Settings:
     def load(self) -> None:
         if Settings.FILE_PATH.exists():
             self._load_json()
-        else:
-            _ = self.update_receive_port_setting(9001)
-            self.auto_start = False
 
     def _load_json(self) -> None:
         """
