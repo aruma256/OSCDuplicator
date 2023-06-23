@@ -12,17 +12,17 @@ def test_load():
         read_data=json.dumps(
             {
                 "receive": {
-                    "port": 9001,
+                    "port": 10001,
                 },
                 "transmit": [
                     {
                         "name": "app_a",
-                        "port": 9002,
+                        "port": 10002,
                         "enabled": True,
                     },
                     {
                         "name": "app_b",
-                        "port": 9003,
+                        "port": 10003,
                         "enabled": False,
                     },
                 ],
@@ -32,16 +32,24 @@ def test_load():
     )
 
     settings = Settings()
+
+    # ファイルが存在しない場合
+    mock_path.exists.return_value = False
     settings.load()
 
     assert settings.receive_port == 9001
 
+    # ファイルが存在する場合
+    mock_path.exists.return_value = True
+    settings.load()
+
+    assert settings.receive_port == 10001
     assert len(settings.transmit_port_settings) == 2
     assert settings.transmit_port_settings[0].name == "app_a"
-    assert settings.transmit_port_settings[0].port == 9002
+    assert settings.transmit_port_settings[0].port == 10002
     assert settings.transmit_port_settings[0].enabled is True
     assert settings.transmit_port_settings[1].name == "app_b"
-    assert settings.transmit_port_settings[1].port == 9003
+    assert settings.transmit_port_settings[1].port == 10003
     assert settings.transmit_port_settings[1].enabled is False
 
 
