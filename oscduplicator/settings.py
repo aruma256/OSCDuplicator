@@ -55,7 +55,7 @@ class Settings:
         save_data = {
             "receive": {"port": self.receive_port},
             "transmit": list(map(asdict, self.transmit_port_settings)),
-            "auto_start": self.auto_start
+            "auto_start": self.auto_start,
         }
 
         with Settings.FILE_PATH.open("w", encoding="UTF-8") as f:
