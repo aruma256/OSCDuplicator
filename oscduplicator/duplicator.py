@@ -69,3 +69,8 @@ class Duplicator:
         self.transmitter.update_transmit_port(
             self.settings.transmit_port_settings
         )
+
+    def update_receive_port(self, port: int):
+        ret = self.settings.update_receive_port_setting(port)
+        if ret:
+            self.receiver.update_receive_port(self.settings.receive_port)
