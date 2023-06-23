@@ -30,7 +30,14 @@ class Settings:
     def receive_port(self) -> int | None:
         return self._receive_port
 
-    def load_json(self) -> None:
+    def load_settings(self) -> None:
+        if Settings.FILE_PATH.exists():
+            self._load_json()
+        else:
+            _ = self.update_receive_port_setting(9001)
+            self.auto_duplicate = False
+
+    def _load_json(self) -> None:
         """
         jsonファイルからセーブデータを取得する
         """
