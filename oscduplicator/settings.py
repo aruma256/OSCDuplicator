@@ -30,7 +30,7 @@ class Settings:
     def receive_port(self) -> int | None:
         return self._receive_port
 
-    def load_settings(self) -> None:
+    def load(self) -> None:
         if Settings.FILE_PATH.exists():
             self._load_json()
         else:
