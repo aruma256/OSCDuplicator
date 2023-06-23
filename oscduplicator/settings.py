@@ -15,22 +15,25 @@ class Settings:
         OSCReceiverのポート
     transmit_port_settings: list[TransmitPortSetting]
         OSCTransmitterのための設定
+    auto_start: bool
+        起動時に自動で受信->転送するかの設定
     """
 
-    FILE_PATH = Path("./oscduplicator/settings.json")
+    FILE_PATH = Path("./settings.json")
 
     def __init__(self) -> None:
-        self._receive_port: int | None = None
+        self._receive_port: int = 9001
         self.transmit_port_settings: list[TransmitPortSetting] = []
+        self.auto_start: bool = False
 
     @property
-    def receive_port(self) -> int | None:
+    def receive_port(self) -> int:
         return self._receive_port
 
-    def load_json(self) -> None:
-        """
-        jsonファイルからセーブデータを取得する
-        """
+    def load(self) -> None:
+        if not Settings.FILE_PATH.exists():
+            return
+
         with Settings.FILE_PATH.open("r", encoding="UTF-8") as f:
             data = json.load(f)
 
@@ -42,11 +45,13 @@ class Settings:
                 port=element["port"],
                 enabled=element["enabled"],
             )
+        self.auto_start = data["auto_start"]
 
     def save_json(self):
         save_data = {
             "receive": {"port": self.receive_port},
             "transmit": list(map(asdict, self.transmit_port_settings)),
+            "auto_start": self.auto_start,
         }
 
         with Settings.FILE_PATH.open("w", encoding="UTF-8") as f:

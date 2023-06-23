@@ -4,5 +4,6 @@
     },
     "transmit": [
 
-    ]
+    ],
+    "auto_duplicate": false
 }
