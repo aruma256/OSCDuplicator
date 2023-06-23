@@ -27,7 +27,7 @@ class Settings:
         self.auto_start: bool = False
 
     @property
-    def receive_port(self) -> int | None:
+    def receive_port(self) -> int:
         return self._receive_port
 
     def load(self) -> None:
