@@ -26,12 +26,13 @@ def test_load_json():
                         "enabled": False,
                     },
                 ],
+                "auto_duplicate": False
             }
         )
     )
 
     settings = Settings()
-    settings.load_json()
+    settings.load_settings()
 
     assert settings.receive_port == 9001
 
@@ -55,6 +56,7 @@ def test_save_json():
         TransmitPortSetting("app_a", 9002, True),
         TransmitPortSetting("app_b", 9003, False),
     ]
+    settings.auto_duplicate = False
 
     settings.save_json()
 
@@ -75,6 +77,7 @@ def test_save_json():
                     "enabled": False,
                 },
             ],
+            "auto_duplicate": False
         },
         indent=4,
         ensure_ascii=False,
