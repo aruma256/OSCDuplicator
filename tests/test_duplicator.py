@@ -12,7 +12,7 @@ def test_load_settings():
     duplicator.load_settings()
 
     # 設定がロードされること
-    settings_mock.load_json.assert_called_once()
+    settings_mock.load.assert_called_once()
     # 設定が反映されること
     receiver_mock.update_receive_port.assert_called_once()
     transmitter_mock.update_transmit_port.assert_called_once()

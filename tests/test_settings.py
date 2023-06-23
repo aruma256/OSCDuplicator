@@ -6,7 +6,7 @@ from oscduplicator.settings import Settings
 from oscduplicator.transmit_port_setting import TransmitPortSetting
 
 
-def test_load_json():
+def test_load():
     Settings.FILE_PATH = mock_path = Mock()
     mock_path.open = mock_open(
         read_data=json.dumps(
@@ -26,13 +26,13 @@ def test_load_json():
                         "enabled": False,
                     },
                 ],
-                "auto_duplicate": False
+                "auto_start": False
             }
         )
     )
 
     settings = Settings()
-    settings.load_settings()
+    settings.load()
 
     assert settings.receive_port == 9001
 
@@ -56,7 +56,7 @@ def test_save_json():
         TransmitPortSetting("app_a", 9002, True),
         TransmitPortSetting("app_b", 9003, False),
     ]
-    settings.auto_duplicate = False
+    settings.auto_start = False
 
     settings.save_json()
 
@@ -77,7 +77,7 @@ def test_save_json():
                     "enabled": False,
                 },
             ],
-            "auto_duplicate": False
+            "auto_start": False
         },
         indent=4,
         ensure_ascii=False,
