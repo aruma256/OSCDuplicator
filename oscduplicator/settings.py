@@ -31,13 +31,9 @@ class Settings:
         return self._receive_port
 
     def load(self) -> None:
-        if Settings.FILE_PATH.exists():
-            self._load_json()
+        if not Settings.FILE_PATH.exists():
+            return
 
-    def _load_json(self) -> None:
-        """
-        jsonファイルからセーブデータを取得する
-        """
         with Settings.FILE_PATH.open("r", encoding="UTF-8") as f:
             data = json.load(f)
 
