@@ -19,7 +19,7 @@ class Settings:
         起動時に自動で受信->転送するかの設定
     """
 
-    FILE_PATH = Path("./oscduplicator/settings.json")
+    FILE_PATH = Path("./settings.json")
 
     def __init__(self) -> None:
         self._receive_port: int | None = None
@@ -61,16 +61,8 @@ class Settings:
             "auto_start": self.auto_start
         }
 
-        if not Settings.FILE_PATH.parent.exists():
-            self._mk_parent_dir()
-
         with Settings.FILE_PATH.open("w", encoding="UTF-8") as f:
             json.dump(save_data, f, indent=4, ensure_ascii=False)
-
-    def _mk_parent_dir(self):
-        dir_path = Settings.FILE_PATH.parent
-        if not dir_path.exists():
-            dir_path.mkdir()
 
     def update_receive_port_setting(self, port: int) -> bool:
         if self.receive_port == port:
