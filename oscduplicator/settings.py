@@ -15,7 +15,7 @@ class Settings:
         OSCReceiverのポート
     transmit_port_settings: list[TransmitPortSetting]
         OSCTransmitterのための設定
-    auto_duplicate: bool
+    auto_start: bool
         起動時に自動で受信->転送するかの設定
     """
 
@@ -24,7 +24,7 @@ class Settings:
     def __init__(self) -> None:
         self._receive_port: int | None = None
         self.transmit_port_settings: list[TransmitPortSetting] = []
-        self.auto_duplicate: bool | None = None
+        self.auto_start: bool | None = None
 
     @property
     def receive_port(self) -> int | None:
@@ -35,7 +35,7 @@ class Settings:
             self._load_json()
         else:
             _ = self.update_receive_port_setting(9001)
-            self.auto_duplicate = False
+            self.auto_start = False
 
     def _load_json(self) -> None:
         """
@@ -52,13 +52,13 @@ class Settings:
                 port=element["port"],
                 enabled=element["enabled"],
             )
-        self.auto_duplicate = data["auto_duplicate"]
+        self.auto_start = data["auto_start"]
 
     def save_json(self):
         save_data = {
             "receive": {"port": self.receive_port},
             "transmit": list(map(asdict, self.transmit_port_settings)),
-            "auto_duplicate": self.auto_duplicate
+            "auto_start": self.auto_start
         }
 
         if not Settings.FILE_PATH.parent.exists():
