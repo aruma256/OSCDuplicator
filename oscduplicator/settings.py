@@ -52,13 +52,13 @@ class Settings:
                 port=element["port"],
                 enabled=element["enabled"],
             )
-        self.auto_duplicate = data["auto_dulicate"]
+        self.auto_duplicate = data["auto_duplicate"]
 
     def save_json(self):
         save_data = {
             "receive": {"port": self.receive_port},
             "transmit": list(map(asdict, self.transmit_port_settings)),
-            "auto_dulicate": self.auto_duplicate
+            "auto_duplicate": self.auto_duplicate
         }
 
         with Settings.FILE_PATH.open("w", encoding="UTF-8") as f:
