@@ -1,2 +1,2 @@
-flet==0.7.4
+flet==0.8.1
 python-osc==1.8.1
